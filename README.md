@@ -16,3 +16,7 @@ Le projet consiste à mettre en place un système de “porte-monnaie virtuels�
 différents types d’établissements. Le système comprendra donc des outils bancaires comme des terminaux de paiement électronique et des cartes 
 “bancaires” spéciales liées à ce système.
 
+## Installation du site 
+
+* Aller dans le fichier web
+* Faire composer install
