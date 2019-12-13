@@ -1,12 +1,12 @@
 s3a_s13_blaise_chagras_kesseiri_mayer_thommet
 
-# Notre groupe est composé de 5 membres qui sont les suivants :
+## Notre groupe est composé de 5 membres qui sont les suivants :
 
-* - Thommet Sacha 
-* - Kesseiri Mohammed
-* - Chagras Flavien 
-* - Mayer Gauthier 
-* - Blaise Lucas
+* Thommet Sacha 
+* Kesseiri Mohammed
+* Chagras Flavien 
+* Mayer Gauthier 
+* Blaise Lucas
 
 ------------------------
 
