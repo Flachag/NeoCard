@@ -70,7 +70,8 @@
         ]
     },
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "*",
+        "doctrine/persistence": "1.3.2"
     },
     "extra": {
         "symfony": {

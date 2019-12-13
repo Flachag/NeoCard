@@ -1,0 +1,10 @@
+
+web/.env
+
+web/.env.test
+
+web/composer.lock
+
+web/phpunit.xml.dist
+
+web/symfony.lock
