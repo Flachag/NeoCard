@@ -4,27 +4,56 @@
 namespace App\Controller;
 
 
+use App\Entity\Utilisateur;
+use App\Repository\UtilisateurRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-class HomeController{
+class HomeController extends AbstractController{
+
+    /**
+     * @var Environment
+     */
+    private $repository;
 
     /**
      * @var Environment
      */
     private $twig;
 
-    public function __construct($twig){
+    public function __construct(Environment $twig, UtilisateurRepository $repository){
+        $this->repository = $repository;
         $this->twig = $twig;
     }
 
     /**
+     * @Route("/", name="home")
+     * @param Request $request
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
-    public function index(): Response{
-        return new Response($this->twig->render('pages/home.html.twig'));
+    public function index(Request $request): Response{
+        $form = $this->createFormBuilder()
+                     ->add('nom', TextType::class)
+                     ->add('mdp', PasswordType::class)
+                     ->add('save', SubmitType::class)
+                     ->setMethod('POST')
+                     ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $this->getDoctrine()->getRepository(Utilisateur::class);
+            $user = $manager->findOneBy(['nom' => $form->get('nom')->getData()]);
+            return $this->redirectToRoute('dashboard', ['user' => $user, 'niquetamere' => 'programme de merde']);
+        }
+        return $this->render('pages/selection_compte.html.twig', [
+                                    'current_menu' => 'index',
+                                    'form' => $form->createView()]);
     }
 }
