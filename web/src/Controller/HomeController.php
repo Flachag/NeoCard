@@ -41,7 +41,7 @@ class HomeController extends AbstractController{
     public function index(Request $request): Response{
         $errors = null;
         $form = $this->createFormBuilder()
-                     ->add('nom', TextType::class)
+                     ->add('login', TextType::class)
                      ->add('mdp', PasswordType::class)
                      ->add('save', SubmitType::class)
                      ->setMethod('POST')
@@ -51,7 +51,7 @@ class HomeController extends AbstractController{
 
         if($form->isSubmitted() && $form->isValid()){
             $manager = $this->getDoctrine()->getRepository(Utilisateur::class);
-            $user = $manager->findBy(['nom' => $form->get('nom')->getData(), 'mdp' => $form->get('mdp')->getData()]);
+            $user = $manager->findBy(['login' => $form->get('login')->getData(), 'mdp' => $form->get('mdp')->getData()]);
             if ($user!=null) {
                 $this->get('session')->set('user', $user);
                 return $this->redirectToRoute('dashboard');
