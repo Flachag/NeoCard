@@ -30,9 +30,13 @@ class DashboardController extends AbstractController{
      */
     public function index(Request $request): Response{
         $user = $this->get('session')->get('user');
-        return $this->render('pages/dashboard.html.twig',[
-                                    'current_menu' => 'dashboard',
-                                    'user' => $user
-                            ]);
+        if($user != null) {
+            return $this->render('pages/dashboard.html.twig', [
+                'current_menu' => 'dashboard',
+                'user' => $user
+            ]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
     }
 }
