@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -50,7 +51,10 @@ class HomeController extends AbstractController{
         if($form->isSubmitted() && $form->isValid()){
             $manager = $this->getDoctrine()->getRepository(Utilisateur::class);
             $user = $manager->findOneBy(['nom' => $form->get('nom')->getData()]);
-            return $this->redirectToRoute('dashboard', ['user' => $user, 'niquetamere' => 'programme de merde']);
+            if ($user!=null) {
+                $this->get('session')->set('user', $user);
+                return $this->redirectToRoute('dashboard');
+            }
         }
         return $this->render('pages/selection_compte.html.twig', [
                                     'current_menu' => 'index',
