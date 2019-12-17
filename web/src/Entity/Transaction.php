@@ -36,9 +36,9 @@ class Transaction
     private $libelle;
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="montant", type="integer", nullable=false)
+     * @ORM\Column(name="montant", type="float", nullable=false)
      */
     private $montant;
 
