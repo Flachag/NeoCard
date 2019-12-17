@@ -49,6 +49,11 @@ class Utilisateur
      */
     private $mdp;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $login;
+
     public function getIdutil(): ?int
     {
         return $this->idutil;
@@ -98,6 +103,18 @@ class Utilisateur
     public function setMdp(string $mdp): self
     {
         $this->mdp = $mdp;
+
+        return $this;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): self
+    {
+        $this->login = $login;
 
         return $this;
     }
