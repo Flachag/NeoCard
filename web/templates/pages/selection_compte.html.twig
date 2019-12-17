@@ -35,6 +35,13 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                                 </div>
+                                {% if errors is not null %}
+                                    <div class="card bg-danger text-white shadow m-2">
+                                        <div class="card-body">
+                                            {{ errors }}
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 {{ form_start(form) }}
                                    {{ form_row(form.nom, {'label': 'Votre nom', 'attr': {'placeholder': 'Nom'} }) }}
                                    {{ form_row(form.mdp,  {'label': 'Votre mot de passe', 'attr': {'placeholder': 'Mot de passe'}}) }}

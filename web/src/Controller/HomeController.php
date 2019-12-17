@@ -39,6 +39,7 @@ class HomeController extends AbstractController{
      * @return Response
      */
     public function index(Request $request): Response{
+        $errors = null;
         $form = $this->createFormBuilder()
                      ->add('nom', TextType::class)
                      ->add('mdp', PasswordType::class)
@@ -50,14 +51,17 @@ class HomeController extends AbstractController{
 
         if($form->isSubmitted() && $form->isValid()){
             $manager = $this->getDoctrine()->getRepository(Utilisateur::class);
-            $user = $manager->findOneBy(['nom' => $form->get('nom')->getData()]);
+            $user = $manager->findBy(['nom' => $form->get('nom')->getData(), 'mdp' => $form->get('mdp')->getData()]);
             if ($user!=null) {
                 $this->get('session')->set('user', $user);
                 return $this->redirectToRoute('dashboard');
+            } else {
+                $errors = "Nom d'utilisateur ou mot de passe incorrect";
             }
         }
         return $this->render('pages/selection_compte.html.twig', [
                                     'current_menu' => 'index',
+                                    'errors' => $errors,
                                     'form' => $form->createView()]);
     }
 }
