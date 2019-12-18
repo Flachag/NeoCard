@@ -31,10 +31,8 @@ class DashboardController extends AbstractController{
 
     /**
      * @Route("/dashboard", name="dashboard")
-     * @param Request $request
-     * @return Response
      */
-    public function index(Request $request): Response{
+    public function index(){
         $user = $this->get('session')->get('user')[0];
         $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
         $solde = null;

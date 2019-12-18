@@ -54,7 +54,7 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item {% if current_menu is defined and current_menu=='virements' %}active{% endif %}">
             <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-exchange-alt"></i>
                 <span>Versements</span>
@@ -63,7 +63,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Opérations:</h6>
                     <a class="collapse-item" href="#">Gérer mes paiements</a>
-                    <a class="collapse-item" href="#">Effectuer un paiement</a>
+                    <a class="collapse-item" href="{{ path('virements') }}">Effectuer un paiement</a>
                 </div>
             </div>
         </li>

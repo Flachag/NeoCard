@@ -1,0 +1,42 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% extends "layout.html.twig" %}
+
+{% block title "Effectuer virement" %}
+
+{% block comptes %}
+    {% for account in accounts %}
+        <a class="collapse-item" href="#">{{ account.libelle }}</a>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-2">
+        <h1 class="h3 mb-0 text-gray-800">Effectuer un virement</h1>
+    </div>
+</div>
+    <div class="col-lg-12">
+        <div class="p-lg-5">
+            {% if success is not null %}
+                <div class="alert alert-success">
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if errors is not null %}
+                <div class="alert alert-danger">
+                    {{ errors }}
+                </div>
+            {% endif %}
+            {{ form_start(form) }}
+            {{ form_row(form.recepteur, {'label': 'Numéro de compte à créditer' }) }}
+            {{ form_row(form.montant,  {'attr': {'placeholder': '25.99'}}) }}
+            {{ form_row(form.libelle) }}
+            {{ form_row(form.save, {'label': 'Effectuer virement', 'attr': {'class': 'btn btn-primary btn-block'}}) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
