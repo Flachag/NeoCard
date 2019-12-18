@@ -34,6 +34,9 @@ class DashboardController extends AbstractController{
      */
     public function index(){
         $user = $this->get('session')->get('user')[0];
+        if($user == null){
+            return $this->redirectToRoute('home');
+        }
         $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
         $solde = null;
         if($user != null) {

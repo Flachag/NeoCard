@@ -37,6 +37,9 @@ class VirementController extends AbstractController{
      */
     public function index(Request $request): Response{
         $user = $this->get('session')->get('user')[0];
+        if($user == null){
+            return $this->redirectToRoute('home');
+        }
         $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
         $errors = null;
         $success = null;
