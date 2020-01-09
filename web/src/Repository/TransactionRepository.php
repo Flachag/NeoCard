@@ -6,7 +6,6 @@ use App\Entity\Transaction;
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Zend\Code\Scanner\Util;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,6 +31,16 @@ class TransactionRepository extends ServiceEntityRepository
         return $query->getResult()[0][1];
     }
 
+    public function getTransactions(Utilisateur $user){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT t 
+                FROM App\Entity\Transaction t  
+                WHERE t.emetteur=:id or t.recepteur=:id ORDER BY t.numtransac DESC'
+        )->setParameter('id', $user->getIdutil());
+        return $query->getResult();
+    }
+
     public function getCredit(Utilisateur $user){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
@@ -39,15 +48,15 @@ class TransactionRepository extends ServiceEntityRepository
                   from App\Entity\Transaction t
                   where t.recepteur=:id'
         )->setParameter('id', $user->getIdutil());
-
         return $query->getResult()[0][1];
     }
 
     public function getSolde(Utilisateur $user): float{
         $debit = $this->getDebit($user);
         $credit = $this->getCredit($user);
-        return $credit-$debit;
+        return $credit-$debit+50;
     }
+
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */

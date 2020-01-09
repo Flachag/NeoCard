@@ -61,8 +61,10 @@ class VirementController extends AbstractController{
                 $errors = "Compte inexistant";
             } else if($solde < $form->get('montant')->getData()) {
                 $errors = "Solde insufisant";
-            } else if($accounts[0]->getIdcompte() == $form->get('recepteur')->getData()){
-                $errors = "Vous ne pouvez pas faire un virement vers votre compte actuel.";
+            } else if($form->get('montant')->getData() < 0) {
+                $errors = "Veuillez rentrer un valeur positive";
+            }  else if($accounts[0]->getIdcompte() == $form->get('recepteur')->getData()){
+                $errors = "Vous ne pouvez pas faire un virement vers votre compte actuel";
             } else {
                 $transac = new Transaction();
                 $transac->setTypetransac('Virement')
@@ -78,12 +80,32 @@ class VirementController extends AbstractController{
                 $success = "Le virement s'est fait avec succès !";
             }
         }
-
         return $this->render('pages/virements.html.twig', [
             'current_menu' => 'virements',
             'errors' => $errors,
             'success' => $success,
             'accounts' => $accounts,
             'form' => $form->createView()]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     * @route ("/historique", name="historique")
+     */
+    public function historique(Request $request): Response{
+        $user = $this->get('session')->get('user')[0];
+        if($user == null){
+            return $this->redirectToRoute('home');
+        }
+        $transactions = $this->transactions->getTransactions($user);
+        $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
+
+        return $this->render('pages/historique.html.twig', [
+            'current_menu' => 'dashboard',
+            'user' => $user,
+            'accounts' => $accounts,
+            'transactions' => $transactions
+        ]);
     }
 }

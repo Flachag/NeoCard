@@ -38,6 +38,10 @@ class HomeController extends AbstractController{
      * @return Response
      */
     public function index(Request $request): Response{
+        if($this->get('session')->get('user')[0] != null){
+            return $this->redirectToRoute('dashboard');
+        }
+
         $errors = null;
         $form = $this->createFormBuilder()
                      ->add('login', TextType::class)
