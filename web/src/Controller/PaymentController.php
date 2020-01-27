@@ -4,9 +4,9 @@
 namespace App\Controller;
 
 use App\Entity\Transaction;
-use App\Repository\CompteRepository;
+use App\Repository\AccountRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\UtilisateurRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-class VirementController extends AbstractController{
+class PaymentController extends AbstractController{
 
     /**
      * @var Environment
@@ -26,7 +26,7 @@ class VirementController extends AbstractController{
     private $account;
 
 
-    public function __construct(UtilisateurRepository $users, TransactionRepository $transac, CompteRepository $acc){
+    public function __construct(UserRepository $users, TransactionRepository $transac, AccountRepository $acc){
         $this->user = $users;
         $this->transactions = $transac;
         $this->account = $acc;
@@ -36,18 +36,15 @@ class VirementController extends AbstractController{
      * @Route("/virements", name="virements")
      */
     public function index(Request $request): Response{
-        $user = $this->get('session')->get('user')[0];
-        if($user == null){
-            return $this->redirectToRoute('home');
-        }
-        $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
+        $user = $this->getUser();
+        $accounts = $this->account->findBy(['id' => $user->getId()]);
         $errors = null;
         $success = null;
 
         $form = $this->createFormBuilder()
-            ->add('recepteur', TextType::class)
-            ->add('montant', MoneyType::class)
-            ->add('libelle', TextType::class)
+            ->add('receiver', TextType::class)
+            ->add('amount', MoneyType::class)
+            ->add('label', TextType::class)
             ->add('save', SubmitType::class)
             ->setMethod('POST')
             ->getForm();
@@ -55,25 +52,24 @@ class VirementController extends AbstractController{
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $recepteur = $this->account->find($form->get('recepteur')->getData());
-            $solde = $this->transactions->getSolde($user);
-            if ($recepteur==null) {
+            $receiver = $this->account->find($form->get('receiver')->getData());
+            $balance = $this->transactions->getBalance($user);
+            if ($receiver==null) {
                 $errors = "Compte inexistant";
-            } else if($solde < $form->get('montant')->getData()) {
+            } else if($balance < $form->get('amount')->getData()) {
                 $errors = "Solde insufisant";
-            } else if($form->get('montant')->getData() < 0) {
+            } else if($form->get('amount')->getData() < 0) {
                 $errors = "Veuillez rentrer un valeur positive";
-            }  else if($accounts[0]->getIdcompte() == $form->get('recepteur')->getData()){
+            }  else if($accounts[0]->getId() == $form->get('receiver')->getData()){
                 $errors = "Vous ne pouvez pas faire un virement vers votre compte actuel";
             } else {
                 $transac = new Transaction();
                 $transac->setTypetransac('Virement')
-                    ->setLibelle($form->get('libelle')->getData())
-                    ->setMontant($form->get('montant')->getData())
-                    ->setEmetteur($accounts[0])
-                    ->setRecepteur($recepteur)
+                    ->setLabel($form->get('libelle')->getData())
+                    ->setAmount($form->get('montant')->getData())
+                    ->setIssuer($accounts[0])
+                    ->setReceiver($receiver)
                     ->setDate(new \DateTime());
-
                 $managerTransac = $this->getDoctrine()->getManager();
                 $managerTransac->persist($transac);
                 $managerTransac->flush();
@@ -94,12 +90,9 @@ class VirementController extends AbstractController{
      * @route ("/historique", name="historique")
      */
     public function historique(Request $request): Response{
-        $user = $this->get('session')->get('user')[0];
-        if($user == null){
-            return $this->redirectToRoute('home');
-        }
+        $user = $this->getUser();
         $transactions = $this->transactions->getTransactions($user);
-        $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
+        $accounts = $this->account->findBy(['iduser' => $user->getId()]);
 
         return $this->render('pages/historique.html.twig', [
             'current_menu' => 'dashboard',

@@ -36,11 +36,19 @@
                             <tbody>
                         {% for transaction in transactions %}
                             <tr>
-                                <td>{{ transaction.emetteur.idCompte }}</td>
-                                <td>{{ transaction.recepteur.idCompte }}</td>
-                                <td>{{ transaction.libelle }}</td>
+                                {% if transaction.idIssuer is not null %}
+                                    <td>{{ transaction.idissuer }}</td>
+                                {% else %}
+                                    <td>Banque</td>
+                                {% endif %}
+                                {% if transaction.idReceiver is not null %}
+                                    <td>{{ transaction.idReceiver }}</td>
+                                {% else %}
+                                    <td>Banque</td>
+                                {% endif %}
+                                <td>{{ transaction.label }}</td>
                                 {% for account in accounts %}
-                                <td class="{% if transaction.recepteur.idCompte == account.idCompte %} text-success {% else %} text-danger {% endif %}">{{ transaction.montant }}</td>
+                                    <td class="{% if transaction.idIssuer == account.id %} text-danger {% else %} text-success {% endif %}">{{ transaction.amount }}</td>
                                 {% endfor %}
                                 <td>{{ transaction.date |date('d/m/y')}}</td>
                             </tr>
@@ -67,11 +75,11 @@
                             <tbody>
                             {% for transaction in transactions %}
                                 {% for account in accounts %}
-                                    {% if account.idCompte == transaction.emetteur.idCompte %}
+                                    {% if account.idUser == transaction.idIssuer %}
                                         <tr>
-                                            <th>{{ transaction.recepteur.idCompte }}</th>
-                                            <td>{{ transaction.libelle }}</td>
-                                            <td class="text-danger">{{ transaction.montant }}</td>
+                                            <th>{{ transaction.idReceiver }}</th>
+                                            <td>{{ transaction.label }}</td>
+                                            <td class="text-danger">{{ transaction.amount }}</td>
                                             <td>{{ transaction.date |date('d/m/y')}}</td>
                                         </tr>
                                     {% endif %}
@@ -98,11 +106,15 @@
                             <tbody>
                             {% for transaction in transactions %}
                                 {% for account in accounts %}
-                                    {% if account.idCompte == transaction.recepteur.idCompte %}
+                                    {% if account.idUser == transaction.idReceiver %}
                                         <tr>
-                                            <th>{{ transaction.emetteur.idCompte }}</th>
-                                            <td>{{ transaction.libelle }}</td>
-                                            <td class="text-success">{{ transaction.montant }}</td>
+                                            {% if transaction.idIssuer is not null %}
+                                                <td>{{ transaction.idissuer }}</td>
+                                            {% else %}
+                                                <td>Banque</td>
+                                            {% endif %}
+                                            <td>{{ transaction.label }}</td>
+                                            <td class="text-success">{{ transaction.amount }}</td>
                                             <td>{{ transaction.date |date('d/m/y')}}</td>
                                         </tr>
                                     {% endif %}

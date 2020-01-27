@@ -6,7 +6,7 @@
 
 {% block comptes %}
     {% for account in accounts %}
-        <a class="collapse-item" href="#">{{ account.libelle }}</a>
+        <a class="collapse-item" href="#">{{ account.label }}</a>
     {% endfor %}
 {% endblock %}
 
@@ -31,10 +31,10 @@
                 </div>
             {% endif %}
             {{ form_start(form) }}
-            {{ form_row(form.recepteur, {'label': 'Numéro de compte à créditer' }) }}
-            {{ form_row(form.montant,  {'attr': {'placeholder': '25.99', 'step': 0.01, 'min': 0}}) }}
-            {{ form_row(form.libelle) }}
-            {{ form_row(form.save, {'label': 'Effectuer virement', 'attr': {'class': 'btn btn-primary btn-block'}}) }}
+                {{ form_row(form.receiver, {'label': 'Numéro de compte à créditer' }) }}
+                {{ form_row(form.amount,  {'attr': {'placeholder': '25.99', 'step': 0.01, 'min': 0}}) }}
+                {{ form_row(form.label) }}
+                {{ form_row(form.save, {'label': 'Effectuer virement', 'attr': {'class': 'btn btn-primary btn-block'}}) }}
             {{ form_end(form) }}
         </div>
     </div>

@@ -1,5 +1,3 @@
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -35,16 +33,35 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                                 </div>
-                                {% if errors is not null %}
-                                    <div class="alert alert-danger">
-                                        {{ errors }}
+                                <form method="POST" action="{{ path('security_login') }}">
+                                    <div class="form-group">
+                                        <label for="id">Identifiant</label>
+                                        <input id="id" type="text" class="form-control" name="_username" required autofocus>
+                                        <div class="invalid-feedback">
+                                            Votre identifiant est indispensable
+                                        </div>
                                     </div>
-                                {% endif %}
-                                {{ form_start(form) }}
-                                   {{ form_row(form.login, {'label': 'Votre login', 'attr': {'placeholder': 'Login'} }) }}
-                                   {{ form_row(form.mdp,  {'label': 'Votre mot de passe', 'attr': {'placeholder': 'Mot de passe'}}) }}
-                                   {{ form_row(form.save, {'label': 'Se connecter', 'attr': {'class': 'btn btn-lg btn-primary btn-block'}}) }}
-                                {{ form_end(form) }}
+
+                                    <div class="form-group">
+                                        <label for="password">Mot de passe
+                                        </label>
+                                        <input id="password" type="password" class="form-control" name="_password" required>
+                                        <div class="invalid-feedback">
+                                            Votre mot de passe est indispensable
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-0">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            Connexion
+                                        </button>
+                                    </div>
+                                    <!--
+                                    <div class="mt-4 text-center">
+                                        Vous n'avez pas de compte? <a href="{{ path('security_registration') }}">Créez-en un</a>
+                                    </div>
+                                    -->
+                                </form>
                             </div>
                         </div>
                     </div>

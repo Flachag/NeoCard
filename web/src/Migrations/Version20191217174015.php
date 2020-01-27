@@ -23,9 +23,9 @@ final class Version20191217174015 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE carte CHANGE idCompte idCompte INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE compte CHANGE idUtil idUtil INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE account CHANGE idUser idUtil INT DEFAULT NULL');
         $this->addSql('ALTER TABLE tpe CHANGE idCompte idCompte INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE utilisateur ADD login VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE user ADD login VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -34,8 +34,8 @@ final class Version20191217174015 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE carte CHANGE idCompte idCompte INT NOT NULL');
-        $this->addSql('ALTER TABLE compte CHANGE idUtil idUtil INT NOT NULL');
+        $this->addSql('ALTER TABLE account CHANGE idUser idUtil INT NOT NULL');
         $this->addSql('ALTER TABLE tpe CHANGE idCompte idCompte INT NOT NULL');
-        $this->addSql('ALTER TABLE utilisateur DROP login');
+        $this->addSql('ALTER TABLE user DROP username');
     }
 }

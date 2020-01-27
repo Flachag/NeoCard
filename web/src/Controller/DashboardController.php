@@ -3,13 +3,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Utilisateur;
-use App\Repository\CompteRepository;
+use App\Repository\AccountRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\UtilisateurRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -23,7 +20,7 @@ class DashboardController extends AbstractController{
     private $account;
 
 
-    public function __construct(UtilisateurRepository $users, TransactionRepository $transac, CompteRepository $acc){
+    public function __construct(UserRepository $users, TransactionRepository $transac, AccountRepository $acc){
         $this->user = $users;
         $this->transactions = $transac;
         $this->account = $acc;
@@ -33,22 +30,14 @@ class DashboardController extends AbstractController{
      * @Route("/dashboard", name="dashboard")
      */
     public function index(){
-        $user = $this->get('session')->get('user')[0];
-        if($user == null){
-            return $this->redirectToRoute('home');
-        }
-        $accounts = $this->account->findBy(['idutil' => $user->getIdUtil()]);
-        $solde = null;
-        if($user != null) {
-            $solde = $this->transactions->getSolde($user);
-            return $this->render('pages/dashboard.html.twig', [
-                'current_menu' => 'dashboard',
-                'user' => $user,
-                'balance' => $solde,
-                'accounts' => $accounts
-            ]);
-        } else {
-            return $this->redirectToRoute('home');
-        }
+        $user = $this->getUser();
+        $accounts = $this->account->findBy(['iduser' => $user->getId()]);
+        $balance = $this->transactions->getBalance($user);
+        return $this->render('pages/dashboard.html.twig', [
+            'current_menu' => 'dashboard',
+            'user' => $user,
+            'balance' => $balance,
+            'accounts' => $accounts
+        ]);
     }
 }

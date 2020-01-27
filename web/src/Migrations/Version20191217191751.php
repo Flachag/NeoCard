@@ -22,7 +22,7 @@ final class Version20191217191751 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE transaction CHANGE montant montant DOUBLE PRECISION NOT NULL');
+        $this->addSql('ALTER TABLE transaction CHANGE amount montant DOUBLE PRECISION NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +30,6 @@ final class Version20191217191751 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE transaction CHANGE montant montant INT NOT NULL');
+        $this->addSql('ALTER TABLE transaction CHANGE amount montant INT NOT NULL');
     }
 }

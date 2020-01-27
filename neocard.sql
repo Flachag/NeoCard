@@ -1,54 +1,103 @@
-SET NAMES utf8;
-SET time_zone = '+00:00';
-SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  lun. 27 jan. 2020 à 21:03
+-- Version du serveur :  5.7.26
+-- Version de PHP :  7.3.5
 
-DROP TABLE IF EXISTS `Utilisateur`;
-CREATE TABLE `Utilisateur` (
-  `idUtil` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `dateNaiss` date NOT NULL,
-  `mdp` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`idUtil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
-DROP TABLE IF EXISTS `Compte`;
-CREATE TABLE `Compte` (
-  `idCompte` int(11) NOT NULL AUTO_INCREMENT,
-  `idUtil` int(11) NOT NULL,
-  `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`idCompte`),
-  FOREIGN KEY (`idUtil`) REFERENCES `Utilisateur`(`idUtil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `Carte`;
-CREATE TABLE `Carte` (
-  `idCarte` int(11) NOT NULL AUTO_INCREMENT,
-  `idCompte` int(11) NOT NULL,
-  `code` int(4),
-  PRIMARY KEY (`idCarte`),
-  FOREIGN KEY (`idCompte`) REFERENCES `Compte`(`idCompte`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-DROP TABLE IF EXISTS `Transaction`;
-CREATE TABLE `Transaction` (
-  `numTransac` int(11) NOT NULL AUTO_INCREMENT,
-  `typeTransac` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `montant` int(11) NOT NULL,
-  `emetteur` int(11),
-  `recepteur` int(11) NOT NULL,
-  `date` date NOT NULL,
-  PRIMARY KEY (`numTransac`),
-  FOREIGN KEY (`emetteur`) REFERENCES `Compte`(`idCompte`),
-  FOREIGN KEY (`recepteur`) REFERENCES `Compte`(`idCompte`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Base de données :  `projet_tut`
+--
 
-DROP TABLE IF EXISTS `TPE`;
-CREATE TABLE `TPE` (
-  `numTPE` int(11) NOT NULL AUTO_INCREMENT,
-  `idCompte` int(11) NOT NULL,
-  PRIMARY KEY (`numTPE`),
-  FOREIGN KEY (`idCompte`) REFERENCES `Compte`(`idCompte`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `account`
+--
+
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE IF NOT EXISTS `account` (
+                                         `id` int(11) NOT NULL AUTO_INCREMENT,
+                                         `idUser` int(11) NOT NULL,
+                                         `label` varchar(255) NOT NULL,
+                                         PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `card`
+--
+
+DROP TABLE IF EXISTS `card`;
+CREATE TABLE IF NOT EXISTS `card` (
+                                      `id` int(11) NOT NULL AUTO_INCREMENT,
+                                      `idAccount` int(11) NOT NULL,
+                                      PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `terminal`
+--
+
+DROP TABLE IF EXISTS `terminal`;
+CREATE TABLE IF NOT EXISTS `terminal` (
+                                          `id` int(11) NOT NULL AUTO_INCREMENT,
+                                          `idAccount` int(11) NOT NULL,
+                                          PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `transaction`
+--
+
+DROP TABLE IF EXISTS `transaction`;
+CREATE TABLE IF NOT EXISTS `transaction` (
+                                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                                             `type` varchar(255) NOT NULL,
+                                             `amount` float NOT NULL,
+                                             `idIssuer` int(11) NOT NULL,
+                                             `idReceiver` int(11) NOT NULL,
+                                             `date` date NOT NULL,
+                                             PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+                                      `id` int(11) NOT NULL AUTO_INCREMENT,
+                                      `name` varchar(255) NOT NULL,
+                                      `surname` varchar(255) NOT NULL,
+                                      `birthday` date NOT NULL,
+                                      `password` varchar(255) NOT NULL,
+                                      `username` varchar(255) NOT NULL,
+                                      `email` varchar(255) NOT NULL,
+                                      PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
