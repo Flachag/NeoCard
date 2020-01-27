@@ -12,3 +12,5 @@ web/symfony.lock
 web/.idea/
 
 .idea/
+
+server/conf/
