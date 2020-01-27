@@ -1,23 +1,20 @@
 package main;
 
+import database.Database;
 import server.Server;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
+/**
+ * Main pour démarrer le serveur.
+ */
 public class StartServer {
 
-    public static void main(String[] args) throws Exception {
-        final int port = 80;
-        new Server(port, getHostIp());
-    }
-
     /**
-     * Récupère l'adresse ip sur le réseau de la machine executant ce programme.
-     * @return String Adresse ipv4.
-     * @throws UnknownHostException Le programme n'arrive pas à récupérer l'adresse ip.
+     * Démarre le serveur sur la machine executant le programme.
+     * @param args String[] Inutile.
      */
-    private static String getHostIp() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    public static void main(String[] args) {
+        Database.openConnection();
+        Database.test();
+        //new Server();
     }
 }

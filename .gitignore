@@ -11,6 +11,9 @@ web/symfony.lock
 
 web/.idea/
 
+<<<<<<< Updated upstream
 .idea/
 
+=======
+>>>>>>> Stashed changes
 server/conf/

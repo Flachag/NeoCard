@@ -1,9 +1,13 @@
 package server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Properties;
 
 /**
  * Serveur multithread créant une connexion pour chaque terminal qui se connecte.
@@ -22,7 +26,7 @@ public class Server {
     private String ip;
 
     /**
-     * Le socket du serveur.
+     * Le socket du serveur protégé.
      */
     private ServerSocket server;
 
@@ -33,20 +37,41 @@ public class Server {
 
     /**
      * Constructeur qui lance le serveur.
-     * @param port int Port du serveur.
-     * @param ip String Adresse ip du serveur.
      */
-    public Server(int port, String ip) {
+    public Server() {
         try {
+            Properties properties = new Properties();
+            String fileName = "conf/server.conf";
+            InputStream is = new FileInputStream(fileName);
+            properties.load(is);
+
+            port = Integer.parseInt(properties.getProperty("port"));
+            ip = getHostIp();
+
             server = new ServerSocket(port, 50, InetAddress.getByName(ip));
-            this.port = port;
-            this.ip = ip;
 
             start();
         }
-        catch (IOException e) {
+        catch (UnknownHostException e) {
+            System.err.println("Impossible de lancer le serveur." +
+                            "\nLe programme n'arrive pas à récupérer l'adresse ip de la machine");
             e.printStackTrace();
         }
+        catch (IOException e) {
+            System.err.println("Impossible de lancer le serveur." +
+                            "\nInformations érronées dans le fichier 'conf/server.conf'" +
+                            "\nVoir le readme pour le configurer");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Récupère l'adresse ip sur le réseau de la machine executant ce programme.
+     * @return String Adresse ipv4.
+     * @throws UnknownHostException Le programme n'arrive pas à récupérer l'adresse ip.
+     */
+    private String getHostIp() throws UnknownHostException {
+        return InetAddress.getLocalHost().getHostAddress();
     }
 
     /**
