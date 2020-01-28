@@ -32,7 +32,11 @@ class DashboardController extends AbstractController{
     public function index(){
         $user = $this->getUser();
         $accounts = $this->account->findBy(['iduser' => $user->getId()]);
-        $balance = $this->transactions->getBalance($user);
+        $balance = 0;
+        foreach ($accounts as $account){
+            $balance += $this->transactions->getBalance($account);
+        }
+
         return $this->render('pages/dashboard.html.twig', [
             'current_menu' => 'dashboard',
             'user' => $user,

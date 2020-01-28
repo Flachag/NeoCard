@@ -75,9 +75,9 @@
                             <tbody>
                             {% for transaction in transactions %}
                                 {% for account in accounts %}
-                                    {% if account.idUser == transaction.idIssuer %}
+                                    {% if account.id == transaction.idIssuer %}
                                         <tr>
-                                            <th>{{ transaction.idReceiver }}</th>
+                                            <td>{{ transaction.idReceiver }}</td>
                                             <td>{{ transaction.label }}</td>
                                             <td class="text-danger">{{ transaction.amount }}</td>
                                             <td>{{ transaction.date |date('d/m/y')}}</td>
@@ -106,7 +106,7 @@
                             <tbody>
                             {% for transaction in transactions %}
                                 {% for account in accounts %}
-                                    {% if account.idUser == transaction.idReceiver %}
+                                    {% if account.id == transaction.idReceiver %}
                                         <tr>
                                             {% if transaction.idIssuer is not null %}
                                                 <td>{{ transaction.idissuer }}</td>

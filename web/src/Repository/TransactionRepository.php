@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\Transaction;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,40 +21,40 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    public function getDebit(User $user)
+    public function getDebit(Account $acc)
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'select sum(t.amount)
                   from App\Entity\Transaction t
                   where t.idissuer=:id'
-        )->setParameter('id', $user->getId());
+        )->setParameter('id', $acc->getId());
         return $query->getResult()[0][1];
     }
 
-    public function getTransactions(User $user){
+    public function getTransactions(Account $account){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'SELECT t 
                 FROM App\Entity\Transaction t  
                 WHERE t.idissuer=:id or t.idreceiver=:id ORDER BY t.id DESC'
-        )->setParameter('id', $user->getId());
+        )->setParameter('id', $account->getId());
         return $query->getResult();
     }
 
-    public function getCredit(User $user){
+    public function getCredit(Account $acc){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
             'select sum(t.amount)
                   from App\Entity\Transaction t
                   where t.idreceiver=:id'
-        )->setParameter('id', $user->getId());
+        )->setParameter('id', $acc->getId());
         return $query->getResult()[0][1];
     }
 
-    public function getBalance(User $user): float{
-        $debit = $this->getDebit($user);
-        $credit = $this->getCredit($user);
+    public function getBalance(Account $acc): float{
+        $debit = $this->getDebit($acc);
+        $credit = $this->getCredit($acc);
         return $credit-$debit;
     }
 
