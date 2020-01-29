@@ -137,32 +137,6 @@ INSERT INTO `transaction` (`id`, `type`, `amount`, `idIssuer`, `idReceiver`, `da
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-<<<<<<< Updated upstream
-                                      `id` int(11) NOT NULL AUTO_INCREMENT,
-                                      `name` varchar(255) NOT NULL,
-                                      `surname` varchar(255) NOT NULL,
-                                      `birthday` date NOT NULL,
-                                      `password` varchar(255) NOT NULL,
-                                      `username` varchar(255) NOT NULL,
-                                      `email` varchar(255) NOT NULL,
-                                      PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `tpe`
---
-
-DROP TABLE IF EXISTS `tpe`;
-CREATE TABLE IF NOT EXISTS `tpe` (
-                                             `ipTPE` varchar(39) NOT NULL,
-                                             `idAccount` int(11) NOT NULL,
-                                             PRIMARY KEY (`ipTPE`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-=======
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `surname` varchar(255) NOT NULL,
@@ -181,7 +155,6 @@ INSERT INTO `user` (`id`, `name`, `surname`, `birthday`, `password`, `username`,
 (7, 'PERNOT', 'Anthony', '2000-03-28', '$2y$13$zl.YpoEhNZb2kpRG.11QWOtxU6n4PbMYULbjoHSnF5gEKfYQHaq16', 'totoprnt', 'anthony.pernot@hotmail.fr'),
 (5, 'Chagras', 'Flavien', '1999-04-23', '$2y$13$9jU6kiCYFCD4zs5aNznIq.dz0ptmIKAMC4TJorGvtzrCY4K6eaGdW', 'Flachag', 'flavien.chagras@gmail.com'),
 (6, 'sayer', 'jul', '2000-10-21', '$2y$13$yV6VG1MKnWh3WQB98IbwnOFosi.Y3Fn.XckB12LhJyE74GD4eDhR2', 'wilders', 'jean-bonaubo@singejj.com');
->>>>>>> Stashed changes
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
