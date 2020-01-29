@@ -98,6 +98,22 @@ class PaymentController extends AbstractController{
         foreach ($accounts as $account){
             $transactions = $this->transactions->getTransactions($account);
         }
+        foreach($transactions as $transaction){
+            $acc = $this->account->findOneBy(['id' => $transaction->getIdissuer()]);
+            $usr = null;
+            if($acc != null) {
+                $usr = $this->user->findOneBy(['id' => $acc->getIduser()]);
+            }
+            $transaction->issuer = $usr;
+
+            $acc = $this->account->findOneBy(['id' => $transaction->getIdreceiver()]);
+            $usr = null;
+            if($acc != null) {
+                $usr = $this->user->findOneBy(['id' => $acc->getIduser()]);
+            }
+            $transaction->receiver = $usr;
+        }
+
         return $this->render('pages/historique.html.twig', [
             'current_menu' => 'dashboard',
             'user' => $user,

@@ -41,6 +41,7 @@ class Transaction
      * @var int
      *
      * @ORM\Column(name="idIssuer", type="integer", nullable=false)
+     * @Assert\Positive()
      */
     private $idissuer;
 
@@ -48,6 +49,7 @@ class Transaction
      * @var int
      *
      * @ORM\Column(name="idReceiver", type="integer", nullable=false)
+     * @Assert\Positive()
      */
     private $idreceiver;
 
