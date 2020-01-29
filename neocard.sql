@@ -96,6 +96,21 @@ CREATE TABLE IF NOT EXISTS `user` (
                                       `email` varchar(255) NOT NULL,
                                       PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tpe`
+--
+
+DROP TABLE IF EXISTS `tpe`;
+CREATE TABLE IF NOT EXISTS `tpe` (
+                                             `ipTPE` varchar(39) NOT NULL,
+                                             `idAccount` int(11) NOT NULL,
+                                             PRIMARY KEY (`ipTPE`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
