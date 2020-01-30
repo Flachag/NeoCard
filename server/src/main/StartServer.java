@@ -1,7 +1,8 @@
 package main;
 
-import database.Database;
 import server.Server;
+
+import java.util.Scanner;
 
 /**
  * Main pour démarrer le serveur.
@@ -13,8 +14,10 @@ public class StartServer {
      * @param args String[] Inutile.
      */
     public static void main(String[] args) {
-        Database.openConnection();
-        Database.test();
-        //new Server();
+        Server server = new Server();
+
+        new Scanner(System.in).next();//Attend une entrée clavier pour fermer le serveur.
+        server.stop();
+        System.exit(0);
     }
 }

@@ -1,5 +1,7 @@
 package server;
 
+import database.Database;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +52,7 @@ public class Server {
 
             server = new ServerSocket(port, 50, InetAddress.getByName(ip));
 
+            Database.openConnection();
             start();
         }
         catch (UnknownHostException e) {
@@ -109,7 +112,7 @@ public class Server {
                     Socket client = server.accept();
 
                     //Une fois reçue, on la traite dans un thread séparé
-                    System.out.println("Client : " + client.getRemoteSocketAddress() + " connecté au serveur");
+                    System.out.println("Client : " + client.getInetAddress().getHostAddress() + " connecté au serveur");
                     Thread t = new Thread(new TerminalListener(client));
                     t.start();
                 }
@@ -121,6 +124,7 @@ public class Server {
             //Une fois sorti de la boucle infinie on ferme le serveur
             try {
                 server.close();
+                Database.closeConnection();
             }
             catch (IOException e) {
                 e.printStackTrace();
