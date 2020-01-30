@@ -2,14 +2,11 @@ package server;
 
 import database.Database;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Properties;
 
 /**
  * Serveur multithread créant une connexion pour chaque terminal qui se connecte.
@@ -39,15 +36,11 @@ public class Server {
 
     /**
      * Constructeur qui lance le serveur.
+     * @param port int Port sur lequel le serveur va écouter.
      */
-    public Server() {
+    public Server(int port) {
         try {
-            Properties properties = new Properties();
-            String fileName = "conf/server.conf";
-            InputStream is = new FileInputStream(fileName);
-            properties.load(is);
-
-            port = Integer.parseInt(properties.getProperty("port"));
+            this.port = port;
             ip = getHostIp();
 
             server = new ServerSocket(port, 50, InetAddress.getByName(ip));
@@ -58,13 +51,12 @@ public class Server {
         catch (UnknownHostException e) {
             System.err.println("Impossible de lancer le serveur." +
                             "\nLe programme n'arrive pas à récupérer l'adresse ip de la machine");
-            e.printStackTrace();
+            System.exit(1);
         }
         catch (IOException e) {
             System.err.println("Impossible de lancer le serveur." +
-                            "\nInformations érronées dans le fichier 'conf/server.conf'" +
-                            "\nVoir le readme pour le configurer");
-            e.printStackTrace();
+                    "\nLe port spécifié (" + port + ") est déjà utilisé");
+            System.exit(1);
         }
     }
 
@@ -127,8 +119,7 @@ public class Server {
                 Database.closeConnection();
             }
             catch (IOException e) {
-                e.printStackTrace();
-                server = null;
+                System.exit(0);
             }
         }
     }
