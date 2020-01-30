@@ -37,7 +37,7 @@ class PaymentController extends AbstractController{
      */
     public function index(Request $request): Response{
         $user = $this->getUser();
-        $accounts = $this->account->findBy(['id' => $user->getId()]);
+        $accounts = $this->account->findBy(['iduser' => $user->getId()]);
         $errors = null;
         $success = null;
 
@@ -53,7 +53,10 @@ class PaymentController extends AbstractController{
 
         if($form->isSubmitted() && $form->isValid()){
             $receiver = $this->account->find($form->get('receiver')->getData());
-            $balance = $this->transactions->getBalance($user);
+            $balance = 0;
+            foreach ($accounts as $account){
+                $balance += $this->transactions->getBalance($account);
+            }
             if ($receiver==null) {
                 $errors = "Compte inexistant";
             } else if($balance < $form->get('amount')->getData()) {
@@ -64,11 +67,11 @@ class PaymentController extends AbstractController{
                 $errors = "Vous ne pouvez pas faire un virement vers votre compte actuel";
             } else {
                 $transac = new Transaction();
-                $transac->setTypetransac('Virement')
-                    ->setLabel($form->get('libelle')->getData())
-                    ->setAmount($form->get('montant')->getData())
-                    ->setIssuer($accounts[0])
-                    ->setReceiver($receiver)
+                $transac->setType('Virement')
+                    ->setLabel($form->get('label')->getData())
+                    ->setAmount($form->get('amount')->getData())
+                    ->setIdissuer($accounts[0]->getId())
+                    ->setIdreceiver($receiver->getId())
                     ->setDate(new \DateTime());
                 $managerTransac = $this->getDoctrine()->getManager();
                 $managerTransac->persist($transac);
@@ -91,8 +94,25 @@ class PaymentController extends AbstractController{
      */
     public function historique(Request $request): Response{
         $user = $this->getUser();
-        $transactions = $this->transactions->getTransactions($user);
         $accounts = $this->account->findBy(['iduser' => $user->getId()]);
+        foreach ($accounts as $account){
+            $transactions = $this->transactions->getTransactions($account);
+        }
+        foreach($transactions as $transaction){
+            $acc = $this->account->findOneBy(['id' => $transaction->getIdissuer()]);
+            $usr = null;
+            if($acc != null) {
+                $usr = $this->user->findOneBy(['id' => $acc->getIduser()]);
+            }
+            $transaction->issuer = $usr;
+
+            $acc = $this->account->findOneBy(['id' => $transaction->getIdreceiver()]);
+            $usr = null;
+            if($acc != null) {
+                $usr = $this->user->findOneBy(['id' => $acc->getIduser()]);
+            }
+            $transaction->receiver = $usr;
+        }
 
         return $this->render('pages/historique.html.twig', [
             'current_menu' => 'dashboard',
