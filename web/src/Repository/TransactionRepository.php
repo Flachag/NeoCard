@@ -78,6 +78,27 @@ class TransactionRepository extends ServiceEntityRepository
 
         return $credit-$debit;
     }
+
+    public function getBalanceMonth($account, $month){
+        $entityManager = $this->getEntityManager();
+        $credit = $entityManager->createQuery(
+            'select sum(t.amount)
+                  from App\Entity\Transaction t
+                  where t.idreceiver=:id and month(t.date)=:month'
+        )->setParameter('id', $account->getId()
+        )->setParameter('month', $month);
+        $credit = $credit->getResult()[0][1];
+
+        $debit = $entityManager->createQuery(
+            'select sum(t.amount)
+                  from App\Entity\Transaction t
+                  where t.idissuer=:id and month(t.date)=:month'
+        )->setParameter('id', $account->getId()
+        )->setParameter('month', $month);
+        $debit = $debit->getResult()[0][1];
+
+        return $credit-$debit;
+    }
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */

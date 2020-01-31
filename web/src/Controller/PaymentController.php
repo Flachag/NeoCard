@@ -50,7 +50,7 @@ class PaymentController extends AbstractController{
             ->getForm();
 
         $form->handleRequest($request);
-
+        $amount = number_format($form->get('amount')->getData(),2);
         if($form->isSubmitted() && $form->isValid()){
             $receiver = $this->account->find($form->get('receiver')->getData());
             $balance = 0;
@@ -61,15 +61,16 @@ class PaymentController extends AbstractController{
                 $errors = "Compte inexistant";
             } else if($balance < $form->get('amount')->getData()) {
                 $errors = "Solde insufisant";
-            } else if($form->get('amount')->getData() < 0) {
+            } else if($amount <= 0) {
                 $errors = "Veuillez rentrer un valeur positive";
             }  else if($accounts[0]->getId() == $form->get('receiver')->getData()){
                 $errors = "Vous ne pouvez pas faire un virement vers votre compte actuel";
             } else {
+
                 $transac = new Transaction();
                 $transac->setType('Virement')
                     ->setLabel($form->get('label')->getData())
-                    ->setAmount($form->get('amount')->getData())
+                    ->setAmount($amount)
                     ->setIdissuer($accounts[0]->getId())
                     ->setIdreceiver($receiver->getId())
                     ->setDate(new \DateTime());

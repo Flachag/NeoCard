@@ -40,6 +40,7 @@ class DashboardController extends AbstractController{
             $balance += $this->transactions->getBalance($account);
         }
 
+        //Graph
         for($i=0; $i<7; $i++){
             $dates[] = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-6+$i, date("Y")));
         }
@@ -51,13 +52,16 @@ class DashboardController extends AbstractController{
         $dates = json_encode($dates);
         $data = json_encode($data);
 
+        //Month balance
+        $month = $this->transactions->getBalanceMonth($account,date('m'));
         return $this->render('pages/dashboard.html.twig', [
             'current_menu' => 'dashboard',
             'user' => $user,
             'balance' => $balance,
             'accounts' => $accounts,
             'labels' => $dates,
-            'data' => $data
+            'data' => $data,
+            'month_balance' => $month
         ]);
     }
 }
