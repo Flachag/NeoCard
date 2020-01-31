@@ -103,6 +103,12 @@ public class TerminalListener implements Runnable {
             //ON attend la réponse du TPE
             String commande = receiveMessage();
 
+            //Si la réponse est incomplète
+            if (commande.length() < 4) {
+                System.err.println("Commande imcomplète :\n" + commande);
+                continue;
+            }
+
             //Et on traite la réponse
             switch (commande.substring(0, 3)) {
                 case "ERR" : {
@@ -113,7 +119,7 @@ public class TerminalListener implements Runnable {
                 }
                 case "PAY" : pay(commande); break;
                 case "END" : isRunning = false; break;
-                default : System.out.println("Commande inconnue :\n" + commande);
+                default : System.err.println("Commande inconnue :\n" + commande);
             }
         }
 
