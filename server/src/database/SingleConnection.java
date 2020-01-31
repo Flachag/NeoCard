@@ -67,13 +67,13 @@ enum SingleConnection {
         catch (IOException e) {
             System.err.println("Fichier 'conf/database.conf' est manquant.\n" +
                                 "Voir le readme pour le configurer");
-            e.printStackTrace();
+            System.exit(1);
         }
         catch (SQLException e) {
             System.err.println("Impossible de se connecter à la BDD." +
                                 "\nInformations érronées dans le fichier 'conf/database.conf'" +
                                 "\nVoir le readme pour le configurer");
-            e.printStackTrace();
+            System.exit(1);
         }
         return null;
     }
