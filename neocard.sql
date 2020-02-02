@@ -2,9 +2,9 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 29 jan. 2020 à 15:21
--- Version du serveur :  5.7.26
+-- Hôte : 185.212.225.190:3306
+-- Généré le :  Dim 02 fév. 2020 à 11:38
+-- Version du serveur :  5.7.29-0ubuntu0.18.04.1
 -- Version de PHP :  7.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `ptut`
+-- Base de données :  `flavien`
 --
 
 -- --------------------------------------------------------
@@ -90,10 +90,17 @@ INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
 
 DROP TABLE IF EXISTS `terminal`;
 CREATE TABLE IF NOT EXISTS `terminal` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(39) NOT NULL,
   `idAccount` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`ip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `terminal`
+--
+
+INSERT INTO `terminal` (`ip`, `idAccount`) VALUES
+('10.10.191.190', 1);
 
 -- --------------------------------------------------------
 
@@ -111,23 +118,24 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `date` date NOT NULL,
   `label` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `transaction`
 --
 
 INSERT INTO `transaction` (`id`, `type`, `amount`, `idIssuer`, `idReceiver`, `date`, `label`) VALUES
-(1, 'Virement', 100, NULL, 1, '2020-01-27', 'Initialisation du Compte'),
-(2, 'Virement', 50, 1, 2, '2020-01-28', 'kdo'),
+(1, 'Virement', 250, NULL, 1, '2019-12-31', 'Initialisation du Compte'),
+(12, 'Virement', 10, 1, 2, '2020-01-29', 'Test'),
 (3, 'Virement', 1, 2, 1, '2020-01-28', 'kdo'),
 (4, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
 (5, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
-(6, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
+(6, 'Virement', 50, 1, 2, '2020-01-24', 'ks'),
 (7, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
 (8, 'Virement', 1000, NULL, 3, '2020-01-28', 'Initialisation du Compte'),
 (9, 'Virement', 50, 1, 3, '2020-01-28', 'Kdo Pernot'),
-(10, 'Virement', 25, 3, 1, '2020-01-28', 'kdo flav');
+(10, 'Virement', 25, 3, 1, '2020-01-28', 'kdo flav'),
+(14, 'Virement', 0.25, 1, 3, '2020-01-31', 'test');
 
 -- --------------------------------------------------------
 
