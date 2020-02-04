@@ -3,10 +3,7 @@ package server;
 import database.Database;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 
 /**
  * Serveur multithread créant une connexion pour chaque terminal qui se connecte.
@@ -41,7 +38,7 @@ public class Server {
     public Server(int port) {
         try {
             this.port = port;
-            ip = getHostIp();
+            ip = getHostIp2();
 
             server = new ServerSocket(port, 50, InetAddress.getByName(ip));
 
@@ -67,6 +64,23 @@ public class Server {
      */
     private String getHostIp() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();
+    }
+
+    /**
+     * Récupère l'adresse ip sur le réseau de la machine executant ce programme.
+     * Facon numéro 2.
+     * @return String Adresse ipv4.
+     * @throws UnknownHostException Le programme n'arrive pas à récupérer l'adresse ip.
+     */
+    private String getHostIp2() throws UnknownHostException {
+        String ip = "ERROR";
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return ip;
     }
 
     /**
