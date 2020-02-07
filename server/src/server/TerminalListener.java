@@ -4,6 +4,8 @@ import database.Database;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 /**
  * Interface entre le serveur et les TPE clients.
@@ -39,10 +41,16 @@ public class TerminalListener implements Runnable {
 
     /**
      * Constructeur initialisant le socket.
+     * Déconnecte automatiquement le TPE si aucune réponse en 10 secondes.
      * @param socket Socket Connexion TPE-Serveur
      */
     public TerminalListener(Socket socket) {
         this.socket = socket;
+        try {
+            socket.setSoTimeout(10000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         initialize();
         isRunning = true;
     }
@@ -65,6 +73,7 @@ public class TerminalListener implements Runnable {
      */
     private void closeConnection() {
         try {
+            isRunning = false;
             in.close();
             out.close();
             socket.close();
@@ -97,33 +106,49 @@ public class TerminalListener implements Runnable {
     public void run() {
         if (!isValide())
             return;
-        sendMessage("CONNECTED");
 
         while (isRunning) {
             //ON attend la réponse du TPE
             String commande = receiveMessage();
 
             //Si la réponse est incomplète
-            if (commande.length() < 4) {
-                System.err.println("Commande imcomplète :\n" + commande);
+            if (!isCommand(commande))
                 continue;
-            }
+
+            commande = commande.replaceFirst("Command: ", "");
 
             //Et on traite la réponse
             switch (commande.substring(0, 3)) {
                 case "ERR" : {
                     System.err.println("Erreur le serveur n'a pas pu recevoir la réponse du TPE : " +
                             socket.getInetAddress().getHostAddress());
-                    isRunning = false;
+                    sendMessage("ERROR");
+                    closeConnection();
                     break;
                 }
-                case "PAY" : pay(commande); break;
-                case "END" : isRunning = false; break;
-                default : System.err.println("Commande inconnue :\n" + commande);
+                case "PAY" : {
+                    pay(commande);
+                    closeConnection();
+                    break;
+                }
+                default : sendMessage("UNKNOWN_COMMAND");System.err.println("Commande inconnue :\n" + commande);
             }
         }
 
         System.out.println("TPE : " + socket.getInetAddress().getHostAddress() + " déconnecté.");
+    }
+
+    /**
+     * Vérifie si un String est bien une commande.
+     * @param toCheck String à tester.
+     * @return True si c'est bien une commande.
+     */
+    private boolean isCommand(String toCheck) {
+        try {
+            return toCheck.startsWith("Command");
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -137,7 +162,9 @@ public class TerminalListener implements Runnable {
 
         //Coupe la connexion si il y'a une erreur de paiement.
         if (!Database.pay(idAccount, cardID, amount))
-            isRunning = false;
+            sendMessage("PAIEMENT_REFUSED");
+        else
+            sendMessage("PAIEMENT_ACCEPTED");
     }
 
     /**
@@ -146,20 +173,34 @@ public class TerminalListener implements Runnable {
      */
     private String receiveMessage() {
         try {
-            return in.readLine();
+            String response = in.readLine();
+            if (response == null)
+                throw new IOException();
+
+            return response;
+        }
+        catch (SocketTimeoutException e) {
+            sendMessage("TIMEOUT");
+            closeConnection();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            sendMessage("ERROR_WHILE_READING_COMMAND");
+            closeConnection();
         }
         return "ERR";
     }
 
     /**
-     * Envoie une chaine de caractère au terminal connecté.
-     * @param message Le message.
+     * Envoie une requête HTTP au TPE associé.
+     * Cette requête contient un header 'Result'.
+     * @param String valeur Valeur du header 'Result'.
      */
-    private void sendMessage(String message) {
-        out.write(message);
+    private void sendMessage(String valeur) {
+        final String HTTP_header = "HTTP/1.1 200 OK\r\n" +
+                "Result: " + valeur + "\r\n" +
+                "\r\n";
+
+        out.write(HTTP_header);
         out.flush();
     }
 }

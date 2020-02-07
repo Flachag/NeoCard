@@ -65,39 +65,28 @@ public class Database {
     /**
      * Effectue un paiement entre le compte associé au TPE et une carte.
      * @param idReceiver int ID du compte recepteur. (Compte associé au TPE)
-     * @param cardID int Numéro de la carte.
+     * @param idIssuer int ID du compte emetteur. (Compte associé à la carte)
      * @param amount float Montant de la transaction.
      * @return boolean True si le paiement a été effectué.
      */
-    public static boolean pay(int idReceiver ,int cardID, float amount) {
+    public static boolean pay(int idReceiver, int idIssuer, float amount) {
         try {
-            if (amount < 0)
+            if (amount < 0 || idReceiver==idIssuer)
                 throw new SQLException();
-
-            //On récupère le compte associé à la carte
-            PreparedStatement pstmt = connection.prepareStatement("SELECT idAccount FROM card WHERE id = ?");
-            pstmt.setInt(1, cardID);
-            ResultSet rs = pstmt.executeQuery();
-            int idAccount;
-            if (rs.next())
-                idAccount = rs.getInt("idAccount");
-            else
-                throw new SQLException();
-            pstmt.close();
-            rs.close();
 
             //On vérifie si le client l'émetteur possède assez de fond.
-            if (soldeCompte(idAccount) < amount)
+            if (soldeCompte(idIssuer) < amount)
                 throw new SQLException();
 
             //On effectue la transaction
-            pstmt = connection.prepareStatement("INSERT INTO transaction(type, amount, idIssuer, idReceiver, \"date\") " +
-                    "VALUES(? , ?, ?, ?, ?)");
-            pstmt.setString(1, "TYPETODO");
+            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO transaction(type, amount, idIssuer, idReceiver, date, label) " +
+                    "VALUES(? , ?, ?, ?, ?, ?)");
+            pstmt.setString(1, "Paiement TPE");
             pstmt.setFloat(2, amount);
-            pstmt.setInt(3, idAccount);
+            pstmt.setInt(3, idIssuer);
             pstmt.setInt(4, idReceiver);
             pstmt.setDate(5, Date.valueOf(LocalDate.now()));
+            pstmt.setString(6, "Paiement TPE");
 
             if (pstmt.executeUpdate() == 0) //Si aucune ligne n'a été insérée il y'a un problème
                 throw new SQLException();
@@ -106,13 +95,13 @@ public class Database {
             pstmt.close();
 
             System.out.println("Paiement effectué avec succès.\n" +
-                    "Emetteur : " + idReceiver + "   Receveur : " + idReceiver + "    Montant : " + amount);
+                    "Emetteur : " + idIssuer + "   Receveur : " + idReceiver + "    Montant : " + amount);
             return true;
         }
         catch (SQLException e) {
             System.err.println("Erreur lors d'un virement avec un TPE" +
                     "\nID du compte associé au TPE : " + idReceiver +
-                    "\nNuméro de la carte : " + cardID +
+                    "\nID du compte associé à la carte : " + idIssuer +
                     "\nMontant : " + amount);
             return false;
         }
