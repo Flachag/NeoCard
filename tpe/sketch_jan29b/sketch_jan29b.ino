@@ -2,8 +2,9 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-// pour les fonctions et objets
+// pour les objets
 #include  "WifiModule.h"
+#include  "ServerModule.h"
 
 const int pinRST = 5;  // pin RST du module RC522 : GPIO5
 const int pinSDA = 4; // pin SDA du module RC522 : GPIO4
@@ -22,7 +23,8 @@ void setup() {
   WifiModule wifiModule;
   wifiModule.connection();
 
-  Serial.println("Tentative de connexion au serveur");
+  ServerModule ServerModule;
+  ServerModule.connection();
 
   Serial.println("En attente de lecture de la carte");
 }

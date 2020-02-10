@@ -13,6 +13,8 @@ class WifiModule {
     WifiModule();
 
     void connection();
+    String getIpAddress();
+    int getWiFiStatus();
     boolean existSSID(String ssid);
 };
 
