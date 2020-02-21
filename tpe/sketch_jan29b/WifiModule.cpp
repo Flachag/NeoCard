@@ -41,6 +41,7 @@ int WifiModule::getWiFiStatus() {
   return WiFi.status();
 }
 
+
 void WifiModule::connection() {
   this->tryingConnect = 0;
   Serial.println();

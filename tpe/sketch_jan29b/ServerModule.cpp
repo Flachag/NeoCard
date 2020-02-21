@@ -27,33 +27,32 @@ void ServerModule::connection() {
 
 void ServerModule::sendCommand(String commande) {
   HTTPClient http;
-  http.setUserAgent("TPE:" + wifiModule.getIpAddress());
-  http.addHeader("Command", commande);
+  WiFiClient client;
+  const char * headerKeys[] = {"result"} ;
+  const size_t numberOfHeaders = 1;
 
-  if (http.begin(this->address)) {
+  if (http.begin(client, this->address)) {
+    http.setUserAgent("TPE:" + wifiModule.getIpAddress());
+    http.addHeader("Command", commande);
+    http.collectHeaders(headerKeys, numberOfHeaders);
+
     Serial.println("Connexion à l'adresse : " + this->address);
+    delay(2000);
+
     int httpCode = http.GET();
     if (httpCode > 0) {
       Serial.println();
-      Serial.print("Commande : ");
+      Serial.print("Command : ");
       Serial.print(commande);
       Serial.println(" envoyé au serveur");
+
     } else {
-      Serial.print("Commande : ");
+      Serial.print("Command : ");
       Serial.print(commande);
       Serial.println(" a échoué");
     }
+    Serial.println(http.header("result"));
   } else {
     Serial.println("Impossible de se connecter à l'adresse : " + this->address);
-  }
-
-  String payload = http.getString();
-  Serial.println("received payload:\n<<");
-  Serial.println(payload);
-  Serial.println(">>");
-  Serial.println();
-
-  for (int i = 0; i < http.headers(); i++) {
-    Serial.println(http.header(i));
   }
 }
