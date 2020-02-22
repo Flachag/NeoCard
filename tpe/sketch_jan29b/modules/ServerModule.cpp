@@ -1,5 +1,5 @@
 /**
-   Bibliothèques
+   Biblioth�ques
 */
 #include "ServerModule.h"
 #include  "WifiModule.h"
@@ -7,9 +7,9 @@
 #include <ESP8266HTTPClient.h>
 
 /**
-   Variables
+   Constantes
 */
-WifiModule wifiModule;
+final WifiModule wifiModule;
 
 /**
         Constructeur par défaut.

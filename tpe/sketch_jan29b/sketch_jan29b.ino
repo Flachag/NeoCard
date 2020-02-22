@@ -3,11 +3,11 @@
 */
 #include <SPI.h>
 #include <MFRC522.h>
-#include  "WifiModule.h"
-#include  "ServerModule.h"
+#include  "headers/WifiModule.h"
+#include  "headers/ServerModule.h"
 
 /**
-   Constantes
+   Variables
 */
 const int pinRST = 5;  // pin RST du module RC522 : GPIO5
 const int pinSDA = 4; // pin SDA du module RC522 : GPIO4
