@@ -1,11 +1,14 @@
-// pour le RC522:
+/**
+   Bibliothèques
+*/
 #include <SPI.h>
 #include <MFRC522.h>
-
-// pour les objets
 #include  "WifiModule.h"
 #include  "ServerModule.h"
 
+/**
+   Constantes
+*/
 const int pinRST = 5;  // pin RST du module RC522 : GPIO5
 const int pinSDA = 4; // pin SDA du module RC522 : GPIO4
 
@@ -13,6 +16,9 @@ MFRC522 rfid(pinSDA, pinRST);
 String UID = "UID";
 int secretCode = 0;
 
+/**
+   Fonction d'initialisation du l'ESP
+*/
 void setup() {
   Serial.begin(115200);
 
@@ -29,6 +35,9 @@ void setup() {
   Serial.println("En attente de lecture de la carte");
 }
 
+/**
+   Fonction continue de l'ESP
+*/
 void loop() {
   if (UID.equals("UID")) {
     if (rfid.PICC_IsNewCardPresent())  // detecte tag

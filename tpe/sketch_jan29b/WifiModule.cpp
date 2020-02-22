@@ -1,15 +1,23 @@
+/**
+   Bibliothèques
+*/
 #include "WifiModule.h"
 #include "functions.h"
-
-// pour la communication WiFi
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 
+/**
+     Constructeur par défaut.
+*/
 WifiModule::WifiModule() {
   WiFi.mode(WIFI_STA);
   this->tryingConnect = 0;
 }
 
+/**
+       Donne l'adresse IP du module Wifi.
+       @return String - IP du module Wifi.
+*/
 String WifiModule::getIpAddress() {
   String ip = "";
   if (WiFi.status() == WL_CONNECTED)  {
@@ -21,6 +29,10 @@ String WifiModule::getIpAddress() {
   return ip;
 }
 
+/**
+       Vérifie si le nom du réseau Wifi existe.
+       @return boolean - vrai si le réseau existe.
+*/
 boolean WifiModule::existSSID(String ssid) {
   boolean flag = false;
   int n = WiFi.scanNetworks();
@@ -37,11 +49,17 @@ boolean WifiModule::existSSID(String ssid) {
   return flag;
 }
 
+/**
+      Donne l'état du module Wifi.
+      @return int - code de l'état.
+*/
 int WifiModule::getWiFiStatus() {
   return WiFi.status();
 }
 
-
+/**
+      Tentative de connexion au réseau Wifi.
+*/
 void WifiModule::connection() {
   this->tryingConnect = 0;
   Serial.println();

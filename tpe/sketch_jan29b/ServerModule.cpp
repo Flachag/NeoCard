@@ -1,15 +1,26 @@
+/**
+   Bibliothèques
+*/
 #include "ServerModule.h"
 #include  "WifiModule.h"
 #include "functions.h"
-
-// pour la communication avec le serveur
 #include <ESP8266HTTPClient.h>
-WifiModule wifiModule;
 
+/**
+   Constantes
+*/
+final WifiModule wifiModule;
+
+/**
+        Constructeur par défaut.
+*/
 ServerModule::ServerModule() {
   this->tryingConnect = 0;
 }
 
+/**
+          Tentative de connexion à l'adresse HTTP.
+*/
 void ServerModule::connection() {
   Serial.println("Tentative de connexion au serveur");
   Serial.println("Entrez l'adresse du serveur : ");
@@ -25,6 +36,9 @@ void ServerModule::connection() {
 
 }
 
+/**
+      Envoie d'une commande via un header à l'adresse HTTP.
+*/
 void ServerModule::sendCommand(String commande) {
   HTTPClient http;
   WiFiClient client;
