@@ -38,18 +38,16 @@ class Transaction
     private $amount;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="idIssuer", type="integer", nullable=false)
-     * @Assert\Positive()
+     * @ORM\Column(name="idIssuer", type="string", nullable=false)
      */
     private $idissuer;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="idReceiver", type="integer", nullable=false)
-     * @Assert\Positive()
+     * @ORM\Column(name="idReceiver", type="string", nullable=false)
      */
     private $idreceiver;
 
@@ -97,24 +95,24 @@ class Transaction
         return $this;
     }
 
-    public function getIdissuer(): ?int
+    public function getIdissuer(): ?string
     {
         return $this->idissuer;
     }
 
-    public function setIdissuer(int $idissuer): self
+    public function setIdissuer(string $idissuer): self
     {
         $this->idissuer = $idissuer;
 
         return $this;
     }
 
-    public function getIdreceiver(): ?int
+    public function getIdreceiver(): ?string
     {
         return $this->idreceiver;
     }
 
-    public function setIdreceiver(int $idreceiver): self
+    public function setIdreceiver(string $idreceiver): self
     {
         $this->idreceiver = $idreceiver;
 

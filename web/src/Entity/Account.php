@@ -23,14 +23,13 @@ class Account
 
     /**
      * @var int
-     *
+     * @ORM\Id
      * @ORM\Column(name="idUser", type="integer", nullable=false)
      */
     private $iduser;
 
     /**
      * @var string
-     * @ORM\Id
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
      */
     private $label;
