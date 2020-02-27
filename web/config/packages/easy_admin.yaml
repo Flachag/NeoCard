@@ -1,0 +1,18 @@
+easy_admin:
+    entities:
+        Utilisateurs:
+            class: App\Entity\User
+            form:
+                fields:
+                    - {property: 'name'}
+                    - {property: 'surname'}
+                    - {property: 'username' }
+                    - {property: 'email' }
+                    - {property: 'roles'}
+
+        Comptes:
+            class: App\Entity\Account
+        Cartes:
+            class: App\Entity\Card
+        Terminaux:
+            class: App\Entity\Terminal
