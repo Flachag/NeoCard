@@ -9,10 +9,13 @@ easy_admin:
                     - {property: 'username' }
                     - {property: 'email' }
                     - {property: 'roles'}
-
         Comptes:
             class: App\Entity\Account
         Cartes:
             class: App\Entity\Card
+            form:
+                fields:
+                    - {property: 'uid'}
+                    - {property: 'account_id'}
         Terminaux:
             class: App\Entity\Terminal
