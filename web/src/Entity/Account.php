@@ -13,10 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Account
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
+     * @ORM\Column(name="id", type="string", nullable=false)
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
@@ -30,12 +29,17 @@ class Account
 
     /**
      * @var string
-     *
+     * @ORM\Id
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
      */
     private $label;
 
-    public function getId(): ?int
+    public function setId($id): self{
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getId(): ?string
     {
         return $this->id;
     }
