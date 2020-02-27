@@ -23,7 +23,7 @@ Le serveur répond avec un code de retour dans le **header Result** de la répon
 
 | Requête | Valeur du header Command | Valeur du header Result cas BON | Valeur du header Result cas ERREUR |
 | --------------- | --------------- | --------------- | ---------------- |
-| Paiement | PAY:IDemetteur:Montant | PAIEMENT_ACCEPTED | PAIEMENT_REFUSED |
+| Paiement | PAY:UIDcarte:Montant | PAIEMENT_ACCEPTED | PAIEMENT_REFUSED |
 
 ## Gestion de la sécurité
 

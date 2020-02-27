@@ -65,12 +65,20 @@ public class Database {
     /**
      * Effectue un paiement entre le compte associé au TPE et une carte.
      * @param idReceiver int ID du compte recepteur. (Compte associé au TPE)
-     * @param idIssuer int ID du compte emetteur. (Compte associé à la carte)
+     * @param cardUID String UID de la carte emettrice. (Compte associé à la carte)
      * @param amount float Montant de la transaction.
      * @return boolean True si le paiement a été effectué.
      */
-    public static boolean pay(int idReceiver, int idIssuer, float amount) {
+    public static boolean pay(int idReceiver, String cardUID, float amount) {
+        int idIssuer = -1;
         try {
+            PreparedStatement pstmt = connection.prepareStatement("SELECT account_id FROM card WHERE uid = ?");
+            pstmt.setString(1, cardUID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            idIssuer = rs.getInt(1);
+            rs.close();
+
             if (amount < 0 || idReceiver==idIssuer)
                 throw new SQLException();
 
@@ -79,7 +87,7 @@ public class Database {
                 throw new SQLException();
 
             //On effectue la transaction
-            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO transaction(type, amount, idIssuer, idReceiver, date, label) " +
+            pstmt = connection.prepareStatement("INSERT INTO transaction(type, amount, idIssuer, idReceiver, date, label) " +
                     "VALUES(? , ?, ?, ?, ?, ?)");
             pstmt.setString(1, "Paiement TPE");
             pstmt.setFloat(2, amount);
