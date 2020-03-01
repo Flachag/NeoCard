@@ -67,6 +67,4 @@ class Account
 
         return $this;
     }
-
-
 }

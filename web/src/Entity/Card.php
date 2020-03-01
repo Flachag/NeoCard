@@ -30,7 +30,6 @@ class Card
 
     /**
      * @var int
-     *
      * @ORM\Column(name="account_id", type="integer", nullable=false)
      */
     private $account_id;
@@ -43,7 +42,7 @@ class Card
     /**
      * @return int
      */
-    public function getAccountId(): int
+    public function getAccountId(): ?int
     {
         return $this->account_id;
     }
@@ -59,7 +58,7 @@ class Card
     /**
      * @return string
      */
-    public function getUid(): string
+    public function getUid(): ?string
     {
         return $this->uid;
     }

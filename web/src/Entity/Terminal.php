@@ -56,7 +56,7 @@ class Terminal
     /**
      * @return string
      */
-    public function getIp(): string
+    public function getIp(): ?string
     {
         return $this->ip;
     }
