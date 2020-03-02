@@ -157,11 +157,11 @@ public class TerminalListener implements Runnable {
      */
     private void pay(String commande) {
         String[] args = commande.split(":");
-        int cardID = Integer.parseInt(args[1]);
+        String cardUID = args[1];
         float amount = Float.parseFloat(args[2]);
 
         //Coupe la connexion si il y'a une erreur de paiement.
-        if (!Database.pay(idAccount, cardID, amount))
+        if (!Database.pay(idAccount, cardUID, amount))
             sendMessage("PAIEMENT_REFUSED");
         else
             sendMessage("PAIEMENT_ACCEPTED");

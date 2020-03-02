@@ -30,12 +30,14 @@ class SecurityController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
+            $user->setRoles(["ROLES_USER"]);
             $manager->persist($user);
             $manager->flush();
 
             $account = new Account();
             $account->setLabel('Compte Courant');
             $account->setIduser($user->getId());
+            $account->setId(bin2hex(random_bytes(10)));
             $manager->persist($account);
             $manager->flush();
             return $this->redirectToRoute("security_login");
