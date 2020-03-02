@@ -7,15 +7,11 @@
 #include <ESP8266HTTPClient.h>
 
 /**
-   Variables
-*/
-WifiModule wifiModule;
-
-/**
         Constructeur par défaut.
 */
-ServerModule::ServerModule() {
+ServerModule::ServerModule(WifiModule wifi) {
   this->tryingConnect = 0;
+  this->wifiModule = wifi;
 }
 
 /**
@@ -26,14 +22,11 @@ void ServerModule::connection() {
   Serial.println("Entrez l'adresse du serveur : ");
   this->address = serialRead();
 
-  if (wifiModule.getWiFiStatus() != 3) {
+  if (this->wifiModule.getWiFiStatus() != 3) {
     Serial.println();
     Serial.println("Pas de connexion Wifi, veuillez-vous reconnecter");
-    wifiModule.connection();
+    this->wifiModule.connection();
   }
-
-  sendCommand("PAY:1:10");
-
 }
 
 /**
@@ -42,11 +35,11 @@ void ServerModule::connection() {
 void ServerModule::sendCommand(String commande) {
   HTTPClient http;
   WiFiClient client;
-  const char * headerKeys[] = {"result"} ;
+  const char * headerKeys[] = {"Result"} ;
   const size_t numberOfHeaders = 1;
 
   if (http.begin(client, this->address)) {
-    http.setUserAgent("TPE:" + wifiModule.getIpAddress());
+    http.setUserAgent("TPE:" + this->wifiModule.getIpAddress());
     http.addHeader("Command", commande);
     http.collectHeaders(headerKeys, numberOfHeaders);
 
@@ -59,13 +52,13 @@ void ServerModule::sendCommand(String commande) {
       Serial.print("Command : ");
       Serial.print(commande);
       Serial.println(" envoyé au serveur");
-
     } else {
       Serial.print("Command : ");
       Serial.print(commande);
       Serial.println(" a échoué");
     }
-    Serial.println(http.header("result"));
+    Serial.println(http.header("Result"));
+    http.stop();
   } else {
     Serial.println("Impossible de se connecter à l'adresse : " + this->address);
   }

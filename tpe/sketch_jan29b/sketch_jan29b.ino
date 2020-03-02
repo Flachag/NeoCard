@@ -3,8 +3,8 @@
 */
 #include <SPI.h>
 #include <MFRC522.h>
-#include  "headers/WifiModule.h"
-#include  "headers/ServerModule.h"
+#include  "WifiModule.h"
+#include  "ServerModule.h"
 
 /**
    Variables
@@ -15,6 +15,9 @@ const int pinSDA = 4; // pin SDA du module RC522 : GPIO4
 MFRC522 rfid(pinSDA, pinRST);
 String UID = "UID";
 int secretCode = 0;
+int afficher = 0;
+WifiModule wifiModule;
+ServerModule ServerModule(wifiModule);
 
 /**
    Fonction d'initialisation du l'ESP
@@ -26,19 +29,19 @@ void setup() {
   SPI.begin();
   rfid.PCD_Init();
 
-  WifiModule wifiModule;
   wifiModule.connection();
-
-  ServerModule ServerModule;
   ServerModule.connection();
-
-  Serial.println("En attente de lecture de la carte");
 }
 
 /**
    Fonction continue de l'ESP
 */
 void loop() {
+  if (afficher == 0) {
+    Serial.println("En attente de lecture de la carte");
+    afficher = 1;
+    UID = "UID";
+  }
   if (UID.equals("UID")) {
     if (rfid.PICC_IsNewCardPresent())  // detecte tag
     {
@@ -50,7 +53,8 @@ void loop() {
           UID.concat(String(rfid.uid.uidByte[i], HEX));
         }
         UID.toUpperCase();
-        Serial.println(UID);
+        ServerModule.sendCommand("PAY:" + UID + ":10");
+        afficher = 0;
       }
     }
   }

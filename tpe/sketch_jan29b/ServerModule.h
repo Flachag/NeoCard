@@ -5,6 +5,7 @@
    Bibliothèques
 */
 #include <Arduino.h>
+#include  "WifiModule.h"
 
 /**
    Classe permettant de définir les attributs et fonctions de
@@ -22,11 +23,16 @@ class ServerModule {
     */
     int tryingConnect;
 
+    /**
+       Module Wifi.
+    */
+    WifiModule wifiModule;
+
   public:
     /**
         Constructeur par défaut.
     */
-    ServerModule();
+    ServerModule(WifiModule wifi);
 
     /**
            Tentative de connexion à l'adresse HTTP.
