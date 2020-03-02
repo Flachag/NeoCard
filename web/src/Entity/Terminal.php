@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Terminal
@@ -33,6 +34,14 @@ class Terminal
         return $this->id;
     }
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ip", type="string", nullable=false)
+     * @Assert\Regex(pattern="/((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/")
+     */
+    private $ip;
+
     public function getIdaccount(): ?int
     {
         return $this->idaccount;
@@ -41,8 +50,23 @@ class Terminal
     public function setIdaccount(int $idaccount): self
     {
         $this->idaccount = $idaccount;
-
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param string $ip
+     */
+    public function setIp(string $ip): void
+    {
+        $this->ip = $ip;
     }
 
 

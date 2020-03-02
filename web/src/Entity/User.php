@@ -89,6 +89,12 @@ class User implements UserInterface
      */
     private $email;
 
+    /**
+     * @var array
+     * @ORM\Column(name="roles", type="json_array")
+     */
+    private $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -166,17 +172,21 @@ class User implements UserInterface
         return $this;
     }
 
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
 
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return $this->roles;
     }
 
 
-    public function getSalt()
-    {
 
-    }
+    public function getSalt(){}
 
     /**
      * Removes sensitive data from the user.

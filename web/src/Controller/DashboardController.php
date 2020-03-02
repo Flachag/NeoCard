@@ -29,19 +29,37 @@ class DashboardController extends AbstractController{
     /**
      * @Route("/dashboard", name="dashboard")
      */
-    public function index(){
+    public function index()
+    {
         $user = $this->getUser();
         $accounts = $this->account->findBy(['iduser' => $user->getId()]);
         $balance = 0;
-        foreach ($accounts as $account){
+        foreach ($accounts as $account) {
             $balance += $this->transactions->getBalance($account);
         }
 
+        //Graph
+        for($i=0; $i<7; $i++){
+            $dates[] = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-6+$i, date("Y")));
+        }
+
+        foreach ($dates as $date){
+            $data[] = $this->transactions->getBalanceAt($account,$date);
+        }
+
+        $dates = json_encode($dates);
+        $data = json_encode($data);
+
+        //Month balance
+        $month = $this->transactions->getBalanceMonth($account,date('m'));
         return $this->render('pages/dashboard.html.twig', [
             'current_menu' => 'dashboard',
             'user' => $user,
             'balance' => $balance,
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'labels' => $dates,
+            'data' => $data,
+            'month_balance' => $month
         ]);
     }
 }

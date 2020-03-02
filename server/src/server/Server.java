@@ -1,13 +1,9 @@
 package server;
 
-import java.io.FileInputStream;
+import database.Database;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Properties;
+import java.net.*;
 
 /**
  * Serveur multithread créant une connexion pour chaque terminal qui se connecte.
@@ -37,31 +33,27 @@ public class Server {
 
     /**
      * Constructeur qui lance le serveur.
+     * @param port int Port sur lequel le serveur va écouter.
      */
-    public Server() {
+    public Server(int port) {
         try {
-            Properties properties = new Properties();
-            String fileName = "conf/server.conf";
-            InputStream is = new FileInputStream(fileName);
-            properties.load(is);
-
-            port = Integer.parseInt(properties.getProperty("port"));
-            ip = getHostIp();
+            this.port = port;
+            ip = getHostIp2();
 
             server = new ServerSocket(port, 50, InetAddress.getByName(ip));
 
+            Database.openConnection();
             start();
         }
         catch (UnknownHostException e) {
             System.err.println("Impossible de lancer le serveur." +
                             "\nLe programme n'arrive pas à récupérer l'adresse ip de la machine");
-            e.printStackTrace();
+            System.exit(1);
         }
         catch (IOException e) {
             System.err.println("Impossible de lancer le serveur." +
-                            "\nInformations érronées dans le fichier 'conf/server.conf'" +
-                            "\nVoir le readme pour le configurer");
-            e.printStackTrace();
+                    "\nLe port spécifié (" + port + ") est déjà utilisé");
+            System.exit(1);
         }
     }
 
@@ -72,6 +64,23 @@ public class Server {
      */
     private String getHostIp() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();
+    }
+
+    /**
+     * Récupère l'adresse ip sur le réseau de la machine executant ce programme.
+     * Facon numéro 2.
+     * @return String Adresse ipv4.
+     * @throws UnknownHostException Le programme n'arrive pas à récupérer l'adresse ip.
+     */
+    private String getHostIp2() throws UnknownHostException {
+        String ip = "ERROR";
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return ip;
     }
 
     /**
@@ -109,7 +118,7 @@ public class Server {
                     Socket client = server.accept();
 
                     //Une fois reçue, on la traite dans un thread séparé
-                    System.out.println("Client : " + client.getRemoteSocketAddress() + " connecté au serveur");
+                    System.out.println("Client : " + client.getInetAddress().getHostAddress() + " connecté au serveur");
                     Thread t = new Thread(new TerminalListener(client));
                     t.start();
                 }
@@ -121,10 +130,10 @@ public class Server {
             //Une fois sorti de la boucle infinie on ferme le serveur
             try {
                 server.close();
+                Database.closeConnection();
             }
             catch (IOException e) {
-                e.printStackTrace();
-                server = null;
+                System.exit(0);
             }
         }
     }
