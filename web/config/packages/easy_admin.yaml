@@ -1,4 +1,9 @@
 easy_admin:
+    site_name: '<i class="fas fa-users-cog"></i> Administration'
+
+    user:
+        name_property_path: 'fullname'
+
     entities:
         Utilisateurs:
             class: App\Entity\User
@@ -11,6 +16,15 @@ easy_admin:
                     - { property: 'email', label: 'Contact' }
                     - { property: 'banned', label: 'Banni' }
                     - { property: 'roles', label: 'Roles' }
+            form:
+                fields:
+                    - id
+                    - name
+                    - surname
+                    - username
+                    - email
+                    - banned
+                    - roles
 
         Comptes:
             class: App\Entity\Account
@@ -37,6 +51,7 @@ easy_admin:
                     - { property: 'idAccount', label: 'No Compte' }
         Transactions:
             class: App\Entity\Transaction
+            disabled_actions: ['edit', 'new']
             list:
                 fields:
                     - id

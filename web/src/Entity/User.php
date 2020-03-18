@@ -95,6 +95,12 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="banned", type="boolean")
+     */
+    private $banned;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -172,6 +178,10 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getFullName(){
+        return $this->surname . ' ' . $this->name;
+    }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -182,6 +192,22 @@ class User implements UserInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBanned(): bool
+    {
+        return $this->banned;
+    }
+
+    /**
+     * @param bool $banned
+     */
+    public function setBanned(bool $banned): void
+    {
+        $this->banned = $banned;
     }
 
 

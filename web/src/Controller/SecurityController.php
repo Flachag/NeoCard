@@ -21,13 +21,14 @@ class SecurityController extends AbstractController
      * @param UserPasswordEncoderInterface $encoder
      * @return Response
      */
-    public function registration(Request $request, EntityManagerInterface $manager,UserPasswordEncoderInterface $encoder){
+    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
+    {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $user->setRoles(["ROLES_USER"]);
@@ -43,8 +44,8 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute("security_login");
         }
 
-        return $this->render('security/registration.html.twig',[
-            'form' =>$form->createView()
+        return $this->render('security/registration.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 
@@ -52,16 +53,27 @@ class SecurityController extends AbstractController
      * @Route("/", name="security_login")
      *
      */
-    public function login(){
-        if($this->getUser() != null){
+    public function login()
+    {
+        if ($this->getUser() != null && !$this->getUser()->isBanned()) {
             return $this->redirectToRoute("dashboard");
         } else {
-            return $this->render("security/login.html.twig");
+            $flash = null;
+            if($this->getUser() == null){
+                $flash = "Login ou Mot de passe incorrect";
+            } else if($this->getUser()->isBanned()){
+                $flash = "Utilisateur Banni";
+            }
+            return $this->render("security/login.html.twig", [
+                'flash' => $flash
+            ]);
         }
     }
 
     /**
      * @Route("/deconnexion", name="security_logout")
      */
-    public function logout(){}
+    public function logout()
+    {
+    }
 }
