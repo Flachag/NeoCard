@@ -54,7 +54,7 @@ void loop() {
         }
         UID.toUpperCase();
         //Serial.println(UID);
-        ServerModule.sendCommand("PAY:" + UID + ":10");
+        ServerModule.sendCommand("PAY:" + UID + "a" + ":10");
         afficher = 0;
       }
     }

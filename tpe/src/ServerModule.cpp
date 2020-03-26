@@ -44,7 +44,6 @@ void ServerModule::sendCommand(String commande) {
     http.collectHeaders(headerKeys, numberOfHeaders);
 
     Serial.println("Connexion à l'adresse : " + this->address);
-    delay(2000);
 
     int httpCode = http.GET();
     if (httpCode > 0) {
