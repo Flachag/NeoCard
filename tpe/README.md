@@ -45,4 +45,5 @@ Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : [ESP
 
 3. Toujours dans **Outils** placer les paramètres suivants :
 ![alt text](Parametres.jpg)
+
 *Vous devrez choisir le port lorsque vous brancherez l'ESP8266*
