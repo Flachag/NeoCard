@@ -1,31 +1,31 @@
-#### Composants
+# Composants
 
 ..* Adafruit Feather HUZZAH ESP8266
 ..* Module iO lecteur RFID MFRC522 VMA405
 
-### Documentation
+## Documentation
 
 [ESP8266](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-feather-huzzah-esp8266.pdf)
 [MFRC522](https://www.velleman.eu/downloads/29/infosheets/mfrc522_datasheet.pdf)
 
-#### Configurer le TPE
+# Configurer le TPE
 
-### Branchements
+## Branchements
 
 ![alt text](https://bitbucket.org/depinfoens/s3a_s13_blaise_chagras_kesseiri_mayer_thommet/src/master/tpe/Montage.jpg "Montage")
 
-### Developpeur
+## Developpeur
 
-## Installation
+### Installation
 
 1. Installer avant tout le pilote pour détecter l'ESP8266 : [Pilote](http://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers).
 
 2. Installer un l'IDE Arduino : [Arduino](https://www.arduino.cc/en/Main/Software).
 Ouvrir le fichier **src.ino** avec l'IDE.
 
-## Configuration
+### Configuration
 
-# Bibliothèques
+### Bibliothèques
 
 1. Dans l'IDE aller dans **Outils > Gestionnaire de bibliothèques**
 
@@ -36,7 +36,7 @@ Ouvrir le fichier **src.ino** avec l'IDE.
 	..* ESP8266HTTPClient
 	..* WiFiClient
 
-# Carte
+#### Carte
 
 1. Aller ensuite dans **Fichier > Préférences**.
 Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : [ESP8266](http://arduino.esp8266.com/stable/package_esp8266com_index.json).
