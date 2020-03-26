@@ -1,16 +1,93 @@
 easy_admin:
+    site_name: '<i class="fas fa-users-cog"></i> Administration'
+
+    user:
+        name_property_path: 'fullname'
+
+    list:
+        actions:
+            - { name: 'edit', icon: 'pencil', label: false }
+            - { name: 'delete', icon: 'trash', label: false }
+
+    design:
+        menu:
+            - { entity: 'Utilisateurs', permissions: 'ROLE_ADMIN' }
+            - { entity: 'Comptes', permissions: 'ROLE_ADMIN' }
+            - { entity: 'Transactions', permissions: 'ROLE_ADMIN' }
+            - { entity: 'Cartes', permissions: 'ROLE_ADMIN' }
+            - { entity: 'Terminaux', permissions: 'ROLE_ADMIN' }
+
     entities:
         Utilisateurs:
             class: App\Entity\User
-            form:
+            list:
                 fields:
-                    - {property: 'name'}
-                    - {property: 'surname'}
-                    - {property: 'email'}
-                    - {property: 'roles'}
+                    - id
+                    - { property: 'name', label: 'Nom' }
+                    - { property: 'surname', label: 'Prénom' }
+                    - { property: 'username', label: 'Pseudo' }
+                    - { property: 'email', label: 'Contact' }
+                    - { property: 'banned', label: 'Banni' }
+                    - { property: 'roles', label: 'Roles' }
+            form:
+                title: Inscription d'un Utilisateur
+                fields:
+                    - name
+                    - surname
+                    - username
+                    - email
+                    - roles
+
         Comptes:
             class: App\Entity\Account
+            list:
+                fields:
+                    - id
+                    - { property: 'iduser', label: 'No Client' }
+                    - { property: 'label', label: 'Type de compte' }
+            form:
+                title: Création d'un Compte
+                fields:
+                    - { property: 'iduser', label: 'No Client' }
+                    - { property: 'label', label: 'Intitulé' }
+
         Cartes:
             class: App\Entity\Card
+            list:
+                fields:
+                    - id
+                    - { property: 'uid', label: 'No Client' }
+                    - { property: 'account_id', label: 'No Compte' }
+            form:
+                title: Ajout d'une Carte
+
         Terminaux:
             class: App\Entity\Terminal
+            disabled_actions: ['edit']
+            list:
+                fields:
+                    - id
+                    - ip
+                    - { property: 'idAccount', label: 'No Compte' }
+            form:
+                title: Ajout d'un Terminal
+
+        Transactions:
+            class: App\Entity\Transaction
+            disabled_actions: ['edit', 'delete']
+
+            list:
+                fields:
+                    - id
+                    - { property: 'type', label: 'Type' }
+                    - { property: 'amount', label: 'Montant' }
+                    - { property: 'idissuer', label: 'No Client Emetteur' }
+                    - { property: 'idreceiver', label: 'No Client Receveur' }
+                    - { property: 'label', label: 'Intitulé' }
+            form:
+                fields:
+                    - { property: 'type', label: 'Type' }
+                    - { property: 'amount', label: 'Montant' }
+                    - { property: 'idissuer', label: 'No Client Emetteur' }
+                    - { property: 'idreceiver', label: 'No Client Receveur' }
+                    - { property: 'label', label: 'Intitulé' }

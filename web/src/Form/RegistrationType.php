@@ -17,10 +17,6 @@ class RegistrationType extends AbstractType
         $builder
             ->add('name')
             ->add('surname')
-            ->add('birthday', DateType::class, [
-                // renders it as a single text box
-                'widget' => 'single_text',
-            ])
             ->add('username')
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
