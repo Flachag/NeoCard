@@ -18,14 +18,14 @@
 
 ### Installation
 
-1. Installer avant tout le pilote pour détecter l'ESP8266 : [Pilote](http://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers).
+1. Installer avant tout le pilote pour détecter l'ESP8266 : http://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers.
 
-2. Installer un l'IDE Arduino : [Arduino](https://www.arduino.cc/en/Main/Software).
+2. Installer un l'IDE Arduino : https://www.arduino.cc/en/Main/Software.
 Ouvrir le fichier **src.ino** avec l'IDE.
 
 ### Configuration
 
-### Bibliothèques
+### Ajout des bibliothèques
 
 1. Dans l'IDE aller dans **Outils > Gestionnaire de bibliothèques**
 
@@ -36,14 +36,17 @@ Ouvrir le fichier **src.ino** avec l'IDE.
 	* 	ESP8266HTTPClient
 	* 	WiFiClient
 
-#### Carte
+#### Ajout de la carte
 
 1. Aller ensuite dans **Fichier > Préférences**.
-Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : [ESP8266](http://arduino.esp8266.com/stable/package_esp8266com_index.json).
+Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : http://arduino.esp8266.com/stable/package_esp8266com_index.json.
 
 2. Aller dans **Outils > Type de carte > Gestionnaire de carte**, rechercher *esp8266* et installer sa dernière version.
 
 3. Toujours dans **Outils** placer les paramètres suivants :
+
 ![alt text](Parametres.jpg)
 
 *Vous devrez choisir le port lorsque vous brancherez l'ESP8266*
+
+La configuration est terminée. Vous pouvez téléverser le programme dans la carte.
