@@ -49,26 +49,15 @@ class User implements UserInterface
     private $surname;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="birthday", type="date", nullable=false)
-     * @Assert\NotNull(message="Votre date de naissance est indispensable")
-     * @Assert\DateTime()
-     */
-    private $birthday;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     * @Assert\Length(min="8", minMessage="Votre mot de passe doit faire au minimum 8 caractères")
-     * @Assert\EqualTo(propertyPath="confirm_password", message="Vous n'avez pas tapé le même mot de passe")
-     * @Assert\NotNull(message="Votre mot de passe est indispensable")
      */
     private $password;
 
     /**
      * @var string
+     *
      */
     public $confirm_password;
 
@@ -95,6 +84,12 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="banned", type="boolean")
+     */
+    private $banned;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,18 +115,6 @@ class User implements UserInterface
     public function setSurname(string $surname): self
     {
         $this->surname = $surname;
-
-        return $this;
-    }
-
-    public function getBirthday(): ?\DateTimeInterface
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(\DateTimeInterface $birthday): self
-    {
-        $this->birthday = $birthday;
 
         return $this;
     }
@@ -172,6 +155,10 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getFullName(){
+        return $this->surname . ' ' . $this->name;
+    }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -182,6 +169,22 @@ class User implements UserInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBanned(): ?bool
+    {
+        return $this->banned;
+    }
+
+    /**
+     * @param bool $banned
+     */
+    public function setBanned(bool $banned): void
+    {
+        $this->banned = $banned;
     }
 
 
