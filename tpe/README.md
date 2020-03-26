@@ -1,18 +1,18 @@
 # Composants
 
-..* Adafruit Feather HUZZAH ESP8266
-..* Module iO lecteur RFID MFRC522 VMA405
+* 	Adafruit Feather HUZZAH ESP8266
+* 	Module iO lecteur RFID MFRC522 VMA405
 
 ## Documentation
 
-[ESP8266](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-feather-huzzah-esp8266.pdf)
-[MFRC522](https://www.velleman.eu/downloads/29/infosheets/mfrc522_datasheet.pdf)
+*	[ESP8266](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-feather-huzzah-esp8266.pdf)
+*	[MFRC522](https://www.velleman.eu/downloads/29/infosheets/mfrc522_datasheet.pdf)
 
 # Configurer le TPE
 
 ## Branchements
 
-![alt text](https://bitbucket.org/depinfoens/s3a_s13_blaise_chagras_kesseiri_mayer_thommet/src/master/tpe/Montage.jpg "Montage")
+![alt text](Montage.jpg)
 
 ## Developpeur
 
@@ -30,11 +30,11 @@ Ouvrir le fichier **src.ino** avec l'IDE.
 1. Dans l'IDE aller dans **Outils > Gestionnaire de bibliothèques**
 
 2. Rechercher et installer les bibliothèques suivantes (si elles ne sont pas détecter par l'IDE *(surligner en orange)*) :
-	..* SPI
-	..* MFRC522
-	..* ESP8266WiFi
-	..* ESP8266HTTPClient
-	..* WiFiClient
+	* 	SPI
+	* 	MFRC522
+	* 	ESP8266WiFi
+	* 	ESP8266HTTPClient
+	* 	WiFiClient
 
 #### Carte
 
@@ -44,5 +44,5 @@ Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : [ESP
 2. Aller dans **Outils > Type de carte > Gestionnaire de carte**, rechercher *esp8266* et installer sa dernière version.
 
 3. Toujours dans **Outils** placer les paramètres suivants :
-![alt text](https://bitbucket.org/depinfoens/s3a_s13_blaise_chagras_kesseiri_mayer_thommet/src/master/tpe/Parametres.jpg "Paramètres")
+![alt text](Parametres.jpg)
 *Vous devrez choisir le port lorsque vous brancherez l'ESP8266*
