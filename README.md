@@ -23,10 +23,10 @@ Lancez un serveur XAMP, importez le fichier de création de la BDD ([sql/neocard
 ## Contributions
 **CHAGRAS Flavien** - SI2 @[Flachag](https://bitbucket.org/%7B806fdb70-aa86-4e38-b980-658683b646d7%7D/)
 
-**BLAISE Lucas** - S3A
+**BLAISE Lucas** - SI1
 
 **KESSEIRI Mohammed** - S3A
 
-**MAYER Gauthier** - S3A
+**MAYER Gauthier** - SI1
 
-**THOMMET Sacha** - S3A
+**THOMMET Sacha** - SI1
