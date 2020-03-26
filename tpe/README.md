@@ -3,7 +3,7 @@
 * 	Adafruit Feather HUZZAH ESP8266
 * 	Module iO lecteur RFID MFRC522 VMA405
 
-## Documentation
+### Documentation
 
 *	[ESP8266](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-feather-huzzah-esp8266.pdf)
 *	[MFRC522](https://www.velleman.eu/downloads/29/infosheets/mfrc522_datasheet.pdf)
@@ -25,7 +25,7 @@ Ouvrir le fichier **src.ino** avec l'IDE.
 
 ### Configuration
 
-### Ajout des bibliothèques
+#### Ajout des bibliothèques
 
 1. Dans l'IDE aller dans **Outils > Gestionnaire de bibliothèques**
 
@@ -47,6 +47,6 @@ Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : http
 
 ![alt text](Parametres.jpg)
 
-*Vous devrez choisir le port lorsque vous brancherez l'ESP8266*
+*Lors du branchement de l'ESP8266, selectionnez le bon port*
 
 La configuration est terminée. Vous pouvez téléverser le programme dans la carte.
