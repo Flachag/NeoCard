@@ -221,7 +221,7 @@ public class TPEController implements Initializable {
                                 }
                                 break;
                         }
-                        if (receive.contains("a echoue") || receive.contains("envoye au serveur")) {
+                        if (receive.contains("a echoue")) {
                             error.setVisible(true);
                             dataReceving = false;
                             try {
