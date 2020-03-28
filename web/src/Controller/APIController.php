@@ -12,6 +12,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+/**
+ * @IgnoreAnnotation("apiName")
+ * @IgnoreAnnotation("apiGroup")
+ * @IgnoreAnnotation("apiParam")
+ * @IgnoreAnnotation("apiSuccess")
+ * @IgnoreAnnotation("apiError")
+ * @IgnoreAnnotation("apiSuccessExample")
+ */
 class APIController extends AbstractController{
 
     /**
