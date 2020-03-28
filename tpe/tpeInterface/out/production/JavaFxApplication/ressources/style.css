@@ -1,7 +1,0 @@
-#connexion, #retry {
- -fx-background-color: #4e73df;
-}
-
-#connexion:hover, #retry:hover {
- -fx-background-color: #2e59d9;
-}
