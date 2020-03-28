@@ -29,8 +29,11 @@ void setup() {
   SPI.begin();
   rfid.PCD_Init();
 
+  pinMode(LED_BUILTIN, OUTPUT);
+
   wifiModule.connection();
   ServerModule.connection();
+
 }
 
 /**
@@ -53,8 +56,8 @@ void loop() {
           UID.concat(String(rfid.uid.uidByte[i], HEX));
         }
         UID.toUpperCase();
-        //Serial.println(UID);
-        ServerModule.sendCommand("PAY:" + UID + "a" + ":10");
+                
+        ServerModule.payCommand(UID);
         afficher = 0;
       }
     }

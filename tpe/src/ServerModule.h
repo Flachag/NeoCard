@@ -19,6 +19,11 @@ class ServerModule {
     String address;
 
     /**
+       Montant de la transaction.
+    */
+    String amount;
+
+    /**
        Nombre de tentative de connexion.
     */
     int tryingConnect;
@@ -42,7 +47,7 @@ class ServerModule {
     /**
        Envoie d'une commande via un header à l'adresse HTTP.
     */
-    void sendCommand(String commande);
+    void payCommand(String uidCard);
 };
 
 #endif

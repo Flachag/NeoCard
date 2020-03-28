@@ -61,62 +61,76 @@ int WifiModule::getWiFiStatus() {
       Tentative de connexion au réseau Wifi.
 */
 void WifiModule::connection() {
-  this->tryingConnect = 0;
-  Serial.println();
-  Serial.print("Tentative de connexion au reseau WiFi");
-  // si en memoire
-
-  // sinon
+  if (WiFi.status() != WL_CONNECTED) {
+    this->tryingConnect = 0;
+    Serial.println();
+    Serial.print("Tentative de connexion au reseau WiFi");
 wifiConnect:
-  WiFi.disconnect();
-  Serial.println();
-  Serial.println("Entrez SSID : ");
-  this->ssid = serialRead();
+    WiFi.disconnect();
+    Serial.println();
+    this->ssid = "";
+    this->password = "";
+    digitalWrite(LED_BUILTIN, LOW);
 
-  if (!existSSID(this->ssid)) {
-    Serial.println("SSID inconnu");
-    goto wifiConnect;
-  }
+    Serial.println("Entrez SSID : ");
+    while (!Serial.available()) {}
+    this->ssid = Serial.readString();
 
-  Serial.println("Entrez mot de passe : ");
-  this->password = serialRead();
+    if (!existSSID(this->ssid)) {
+      Serial.println("SSID inconnu");
+      goto wifiConnect;
+    }
 
-  WiFi.begin(this->ssid, this->password);
+    Serial.println("Entrez mot de passe : ");
+    while (!Serial.available()) {}
+    this->password = Serial.readString();
 
-  Serial.println();
-  Serial.print("Test de connexion au reseau WiFi");
+    WiFi.begin(this->ssid, this->password);
+
+    Serial.println();
+    Serial.print("Test de connexion au reseau WiFi");
 
 wifiStatus:
-  if (this->tryingConnect == 50) {
-    Serial.println();
-    Serial.println("Trop de tentative, veuillez reessayer");
-    this->tryingConnect = 0;
-    connection();
-  } else {
-    this->tryingConnect++;
-  }
-
-  if (WiFi.status() != WL_CONNECTED) {
-    if (this->tryingConnect == 1) {
+    if (this->tryingConnect == 25) {
       Serial.println();
+      String waitResponse = "";
+
+      Serial.println("Trop de tentative, veuillez reessayer");
+      while (!Serial.available()) {}
+      waitResponse = Serial.readString();
+
+      this->tryingConnect = 0;
+      goto wifiConnect;
+    } else {
+      this->tryingConnect++;
     }
-    delay(500);
-    if (this->tryingConnect % 2 == 0) {
+
+    if (WiFi.status() != WL_CONNECTED) {
+      if (this->tryingConnect == 1) {
+        Serial.println();
+      }
+      delay(500);
       Serial.print(".");
+      goto wifiStatus;
     }
-    goto wifiStatus;
-  }
-  else if (WiFi.status() == WL_CONNECTED)  {
-    Serial.println();
-    Serial.println("Connexion au reseau reussi !");
+    else if (WiFi.status() == WL_CONNECTED)  {
+      Serial.println();
+      String waitResponse = "";
 
-    Serial.print("Nom du reseau WiFi : ");
-    Serial.println(this->ssid);
+      Serial.println("Connexion au reseau reussi !");
+      while (!Serial.available()) {}
+      waitResponse = Serial.readString();
 
-    Serial.print("Adresse IP TPE : ");
-    Serial.println(WiFi.localIP());
-    Serial.println();
-  } else {
-    goto wifiStatus;
+      Serial.print("Nom du reseau WiFi : ");
+      Serial.println(this->ssid);
+
+      Serial.print("Adresse IP TPE : ");
+      Serial.println(WiFi.localIP());
+      Serial.println();
+
+      digitalWrite(LED_BUILTIN, HIGH);
+    } else {
+      goto wifiStatus;
+    }
   }
 }
