@@ -13,6 +13,12 @@ cd web
 composer install
 ```
 
+### Correction bug mémoire composer
+
+```
+php -d memory_limit=-1 "/path/to/composer.phar" install
+```
+
 Il faut modifier le fichier de configuration pour la base de donnée nommé **.env** afin d'y ajouter votre propre base:
 DATABASE_URL=mysql://root:root@127.0.0.1:3306/ptut?serverVersion=5.7 pour un localhost
 
