@@ -50,3 +50,20 @@ Dans le champs **Url de gestionnaire de cartes supplémentaires** ajoutez : http
 *Lors du branchement de l'ESP8266, selectionnez le bon port*
 
 La configuration est terminée. Vous pouvez téléverser le programme dans la carte.
+
+## Général
+
+### Exécuter l'application
+
+```
+java -jar TPE_Interface.jar
+```
+
+### Informations
+
+L'application est compilé avec **JDK 1.8.0_241**.
+Bibliothèques présentes : 
+	*	JavaFx 11.0.2
+	*	SerialComm 2.6.0
+
+Lors du fonctionnement du TPE la **LED rouge** indique que l'ESP8266 **n'est pas connecté à un réseau**.

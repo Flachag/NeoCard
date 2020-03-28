@@ -1,0 +1,10 @@
+#gitignore pour le code du serveur heberge sur le Raspberry
+
+/out
+
+.idea
+
+*.class
+
+.log
+/.metadata/
