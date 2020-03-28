@@ -33,6 +33,14 @@ class APIController extends AbstractController{
     }
 
     /**
+     * @Route("/access-denied", name="access-denied")
+     */
+    public function denied(){
+        return new Response("Access denied.", 403);
+
+    }
+
+    /**
      * @api {post} / Ouvre une session avec un rôle qui a accès à l'API.
      * @apiName login
      * @apiGroup Login
