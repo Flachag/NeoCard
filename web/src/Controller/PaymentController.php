@@ -67,17 +67,13 @@ class PaymentController extends AbstractController{
                 $errors = "Vous ne pouvez pas faire un virement vers votre compte actuel";
             } else {
 
-                $transac = new Transaction();
-                $transac->setType('Virement')
-                    ->setLabel($form->get('label')->getData())
-                    ->setAmount($amount)
-                    ->setIdissuer($accounts[0]->getId())
-                    ->setIdreceiver($receiver->getId())
-                    ->setDate(new \DateTime());
-                $managerTransac = $this->getDoctrine()->getManager();
-                $managerTransac->persist($transac);
-                $managerTransac->flush();
-                $success = "Le virement s'est fait avec succès !";
+                try {
+                    $repo = $this->getDoctrine()->getRepository(Transaction::class);
+                    $repo->effectuerTransaction($form->get('label')->getData(),$amount,$accounts[0]->getId(),$receiver->getId(),'Virement');
+                    $success = "Le virement s'est fait avec succès !";
+                }catch (\Exception $e){
+                    $errors = $e->getMessage();
+                }
             }
         }
         return $this->render('pages/virements.html.twig', [

@@ -147,24 +147,15 @@ class APIController extends AbstractController{
 
         if (isset($idIssuer) && $idIssuer != null && $amount > 0 && $amount <= $solde){
             try {
-                $transac = new Transaction();
-                $transac->setLabel("Paiement TPE");
-                $transac->setAmount($amount);
-                $transac->setIdissuer($idIssuer);
-                $transac->setIdreceiver($idReceiver);
-                $transac->setDate(new \DateTime());
-                $transac->setType("Paiement TPE");
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($transac);
-                $manager->flush();
+                $repo->effectuerTransaction("Paiement TPE",$amount,$idIssuer,$idReceiver,"Paiement TPE");
             } catch (\Exception $e){
-                return new Response('{"status":"'. 'error' .'" }',403);
+                return new Response('{"status":"'. 'error' .'", "type":"'. $e->getMessage() .'" }',403);
             }
 
 
             return new Response('{"status":"'. 'success' .'" }',200);
         }
-        else return new Response('{"status":"'. 'error' .'" }',403);
+        else return new Response('{"status":"'. 'error' .'", "type":"unknown"}',403);
     }
 
 

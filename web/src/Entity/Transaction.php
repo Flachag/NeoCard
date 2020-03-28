@@ -66,6 +66,13 @@ class Transaction
      */
     private $label;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hash", type="string", nullable=false)
+     */
+    private $hash;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +147,18 @@ class Transaction
     {
         $this->label = $label;
 
+        return $this;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
+
+
+    public function setHash(string $hash): self
+    {
+        $this->hash = $hash;
         return $this;
     }
 }
