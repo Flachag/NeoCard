@@ -20,6 +20,7 @@ class SecurityController extends AbstractController
      * @param EntityManagerInterface $manager
      * @param UserPasswordEncoderInterface $encoder
      * @return Response
+     * @throws \Exception
      */
     public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
@@ -31,7 +32,8 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            $user->setRoles(["ROLES_USER"]);
+            $user->setBanned(false);
+            $user->setRoles(["ROLE_USER"]);
             $manager->persist($user);
             $manager->flush();
 

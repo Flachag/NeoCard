@@ -46,7 +46,10 @@ easy_admin:
                     - id
                     - { property: 'uid', label: 'No Client' }
                     - { property: 'account_id', label: 'No Compte' }
-
+            form:
+                fields:
+                    - { property: 'uid', label: 'No Client' }
+                    - { property: 'account_id', label: 'No Compte' }
 
         Terminaux:
             class: App\Entity\Terminal
@@ -55,6 +58,11 @@ easy_admin:
                     - id
                     - ip
                     - { property: 'idAccount', label: 'No Compte' }
+            form:
+                fields:
+                    - ip
+                    - { property: 'idAccount', label: 'No Compte' }
+
         Transactions:
             class: App\Entity\Transaction
             disabled_actions: ['edit', 'delete']
@@ -67,3 +75,9 @@ easy_admin:
                     - { property: 'idreceiver', label: 'No Client Receveur' }
                     - { property: 'label', label: 'Intitulé' }
                     - date
+            form:
+                fields:
+                    - { property: 'type', label: 'Type' }
+                    - { property: 'amount', label: 'Montant' }
+                    - { property: 'idreceiver', label: 'No Client Receveur' }
+                    - { property: 'label', label: 'Intitulé' }
