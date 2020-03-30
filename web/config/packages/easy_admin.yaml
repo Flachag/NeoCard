@@ -6,7 +6,7 @@ easy_admin:
 
     entities:
         Utilisateurs:
-            controller: App\Controller\UserManagerController
+            controller: App\Controller\Admin\UserManagerController
             class: App\Entity\User
             list:
                 fields:
@@ -18,18 +18,24 @@ easy_admin:
                     - { property: 'banned', label: 'Banni' }
                     - { property: 'roles', label: 'Roles' }
             form:
+                title: Créer ou Modifier un utilisateur
                 fields:
-                    - name
-                    - surname
-                    - username
-                    - email
-                    - roles
+                    - { property: 'name', label: 'Nom' }
+                    - { property: 'surname', label: 'Prénom' }
+                    - { property: 'username', label: 'Pseudo' }
+                    - { property: 'email', label: 'Contact' }
+                    - { property: 'roles', label: 'Roles' }
 
         Comptes:
             class: App\Entity\Account
+            controller: App\Controller\Admin\AccountManagerController
             list:
                 fields:
                     - id
+                    - { property: 'iduser', label: 'No Client' }
+                    - { property: 'label', label: 'Type de compte' }
+            form:
+                fields:
                     - { property: 'iduser', label: 'No Client' }
                     - { property: 'label', label: 'Type de compte' }
 
@@ -40,6 +46,7 @@ easy_admin:
                     - id
                     - { property: 'uid', label: 'No Client' }
                     - { property: 'account_id', label: 'No Compte' }
+
 
         Terminaux:
             class: App\Entity\Terminal

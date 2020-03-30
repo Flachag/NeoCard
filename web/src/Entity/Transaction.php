@@ -66,6 +66,13 @@ class Transaction
      */
     private $label;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hash", type="string", nullable=false)
+     */
+    private $hash;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,10 +131,9 @@ class Transaction
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
-
+        $this->date = new \DateTime();
         return $this;
     }
 
@@ -139,7 +145,18 @@ class Transaction
     public function setLabel(string $label): self
     {
         $this->label = $label;
+        return $this;
+    }
 
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
+
+
+    public function setHash(string $hash): self
+    {
+        $this->hash = $hash;
         return $this;
     }
 }

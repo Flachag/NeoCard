@@ -15,15 +15,13 @@ class Account
 {
     /**
      * @var string
-     *
+     * @ORM\Id
      * @ORM\Column(name="id", type="string", nullable=false)
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var int
-     * @ORM\Id
      * @ORM\Column(name="idUser", type="integer", nullable=false)
      */
     private $iduser;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 
@@ -11,7 +11,6 @@ class UserManagerController extends EasyAdminController
         $result = parent::createNewEntity();
         $result->setPassword(password_hash("password",PASSWORD_BCRYPT));
         $result->setBanned(false);
-        dump($result);
         return $result;
     }
 
