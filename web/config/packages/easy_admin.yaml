@@ -19,6 +19,7 @@ easy_admin:
 
     entities:
         Utilisateurs:
+            controller: App\Controller\Admin\UserManagerController
             class: App\Entity\User
             list:
                 fields:
@@ -30,26 +31,27 @@ easy_admin:
                     - { property: 'banned', label: 'Banni' }
                     - { property: 'roles', label: 'Roles' }
             form:
-                title: Inscription d'un Utilisateur
+                title: Créer ou Modifier un utilisateur
                 fields:
-                    - name
-                    - surname
-                    - username
-                    - email
-                    - roles
+                    - { property: 'name', label: 'Nom' }
+                    - { property: 'surname', label: 'Prénom' }
+                    - { property: 'username', label: 'Pseudo' }
+                    - { property: 'email', label: 'Contact' }
+                    - { property: 'roles', label: 'Roles' }
 
         Comptes:
             class: App\Entity\Account
+            controller: App\Controller\Admin\AccountManagerController
             list:
                 fields:
                     - id
                     - { property: 'iduser', label: 'No Client' }
                     - { property: 'label', label: 'Type de compte' }
             form:
-                title: Création d'un Compte
+                title: Création ou Modification d'un Compte
                 fields:
                     - { property: 'iduser', label: 'No Client' }
-                    - { property: 'label', label: 'Intitulé' }
+                    - { property: 'label', label: 'Type de compte' }
 
         Cartes:
             class: App\Entity\Card
@@ -59,35 +61,36 @@ easy_admin:
                     - { property: 'uid', label: 'No Client' }
                     - { property: 'account_id', label: 'No Compte' }
             form:
-                title: Ajout d'une Carte
+                title: Ajout ou Modification d'une Carte
 
         Terminaux:
             class: App\Entity\Terminal
-            disabled_actions: ['edit']
             list:
                 fields:
                     - id
                     - ip
                     - { property: 'idAccount', label: 'No Compte' }
             form:
-                title: Ajout d'un Terminal
+                title: Ajout ou Modification d'un Terminal
+                fields:
+                    - ip
+                    - { property: 'idAccount', label: 'No Compte' }
 
         Transactions:
             class: App\Entity\Transaction
             disabled_actions: ['edit', 'delete']
-
             list:
                 fields:
-                    - id
+                    - { property: 'hash', label: 'Code' }
                     - { property: 'type', label: 'Type' }
                     - { property: 'amount', label: 'Montant' }
                     - { property: 'idissuer', label: 'No Client Emetteur' }
                     - { property: 'idreceiver', label: 'No Client Receveur' }
                     - { property: 'label', label: 'Intitulé' }
+                    - date
             form:
                 fields:
                     - { property: 'type', label: 'Type' }
                     - { property: 'amount', label: 'Montant' }
-                    - { property: 'idissuer', label: 'No Client Emetteur' }
                     - { property: 'idreceiver', label: 'No Client Receveur' }
                     - { property: 'label', label: 'Intitulé' }

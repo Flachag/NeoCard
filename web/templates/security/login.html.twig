@@ -33,6 +33,11 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                                 </div>
+                                {% if flash is not null %}
+                                    <div class="alert alert-danger">
+                                        {{ flash }}
+                                    </div>
+                                {% endif %}
                                 <form method="POST" action="{{ path('security_login') }}">
                                     <div class="form-group">
                                         <label for="id">Identifiant</label>

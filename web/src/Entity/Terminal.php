@@ -23,9 +23,9 @@ class Terminal
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="idAccount", type="integer", nullable=false)
+     * @ORM\Column(name="idAccount", type="string", nullable=false)
      */
     private $idaccount;
 
@@ -42,12 +42,12 @@ class Terminal
      */
     private $ip;
 
-    public function getIdaccount(): ?int
+    public function getIdaccount(): ?string
     {
         return $this->idaccount;
     }
 
-    public function setIdaccount(int $idaccount): self
+    public function setIdaccount(string $idaccount): self
     {
         $this->idaccount = $idaccount;
         return $this;
