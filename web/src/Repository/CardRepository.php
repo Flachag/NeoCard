@@ -19,6 +19,15 @@ class CardRepository extends ServiceEntityRepository
         parent::__construct($registry, Card::class);
     }
 
+    public function getUserIdByCardUid($uid){
+        $accountId = -1;
+        $card = $this->findOneBy(['uid' => $uid]);
+        if(isset($card)){
+            $accountId = $card->getAccountId();
+        }
+        return $accountId;
+    }
+
     // /**
     //  * @return Card[] Returns an array of Card objects
     //  */

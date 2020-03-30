@@ -20,6 +20,51 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+    public function effectuerTransaction($label,$amount,$idIssuer,$idReceiver,$type) {
+        //si pas encore de transactions
+        $transactions = $this->findAll();
+        $hash_last = "";
+        $last = new Transaction();
+        $count = count($transactions);
+        if($count == 0){
+            $hash = md5(ceil($amount) . $idIssuer . $idReceiver . $type);
+        }
+        else{
+            $last = $transactions[$count - 1];
+            $hash_last = $last->getHash();
+            $hash = md5($hash_last . ceil($amount) . $idIssuer . $idReceiver . $type);
+        }
+
+        //il faut verifier que le hash de la précédente est bon
+        if($count == 1){ // cas ou il n'y a que la premiere transaction dans la base
+            $expected_hash = md5(ceil($last->getAmount()) . $last->getIdissuer() . $last->getIdreceiver() . $last->getType());
+        }
+        else{ //
+            $last_prev_hash = $transactions[$count - 2]->getHash();
+            $expected_hash = md5($last_prev_hash . ceil($last->getAmount()) . $last->getIdissuer() . $last->getIdreceiver() . $last->getType());
+        }
+
+        //si les hash correspondent alors ok
+        if($expected_hash == $hash_last){
+            try {
+                $transac = new Transaction();
+                $transac->setLabel($label);
+                $transac->setHash($hash);
+                $transac->setAmount($amount);
+                $transac->setIdissuer($idIssuer);
+                $transac->setIdreceiver($idReceiver);
+                $transac->setDate(new \DateTime());
+                $transac->setType($type);
+
+                $manager = $this->getEntityManager();
+                $manager->persist($transac);
+                $manager->flush();
+            } catch (\Exception $e){}
+        }
+        else throw new \Exception("L'intégrité des transactions n'est plus bonne.");
+
+    }
+
     public function getDebit(Account $acc)
     {
         $entityManager = $this->getEntityManager();

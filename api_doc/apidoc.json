@@ -1,0 +1,7 @@
+{
+  "name": "API pour le serveur.",
+  "version": "0.1.0",
+  "description": "API servant d'inferface entre la base de données et le serveur de TPE",
+  "title": "API serveur",
+  "url" : ""
+}
