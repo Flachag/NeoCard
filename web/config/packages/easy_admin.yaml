@@ -6,6 +6,7 @@ easy_admin:
 
     entities:
         Utilisateurs:
+            controller: App\Controller\UserManagerController
             class: App\Entity\User
             list:
                 fields:
@@ -18,12 +19,10 @@ easy_admin:
                     - { property: 'roles', label: 'Roles' }
             form:
                 fields:
-                    - id
                     - name
                     - surname
                     - username
                     - email
-                    - banned
                     - roles
 
         Comptes:
@@ -51,12 +50,13 @@ easy_admin:
                     - { property: 'idAccount', label: 'No Compte' }
         Transactions:
             class: App\Entity\Transaction
-            disabled_actions: ['edit', 'new']
+            disabled_actions: ['edit', 'delete']
             list:
                 fields:
-                    - id
+                    - { property: 'hash', label: 'Code' }
                     - { property: 'type', label: 'Type' }
                     - { property: 'amount', label: 'Montant' }
                     - { property: 'idissuer', label: 'No Client Emetteur' }
                     - { property: 'idreceiver', label: 'No Client Receveur' }
                     - { property: 'label', label: 'Intitulé' }
+                    - date

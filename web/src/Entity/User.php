@@ -49,21 +49,9 @@ class User implements UserInterface
     private $surname;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="birthday", type="date", nullable=false)
-     * @Assert\NotNull(message="Votre date de naissance est indispensable")
-     * @Assert\DateTime()
-     */
-    private $birthday;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     * @Assert\Length(min="8", minMessage="Votre mot de passe doit faire au minimum 8 caractères")
-     * @Assert\EqualTo(propertyPath="confirm_password", message="Vous n'avez pas tapé le même mot de passe")
-     * @Assert\NotNull(message="Votre mot de passe est indispensable")
      */
     private $password;
 
@@ -130,18 +118,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthday(): ?\DateTimeInterface
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(\DateTimeInterface $birthday): self
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
     public function getPassword(): ?string
     {
         return $this->password;
@@ -197,7 +173,7 @@ class User implements UserInterface
     /**
      * @return bool
      */
-    public function isBanned(): bool
+    public function isBanned(): ?bool
     {
         return $this->banned;
     }
