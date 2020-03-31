@@ -17,3 +17,5 @@ web/.idea/
 =======
 >>>>>>> Stashed changes
 server/conf/
+
+*.jar

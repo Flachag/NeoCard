@@ -2,9 +2,9 @@
 
 Créer un fichier de configuration dans le dossier conf (à créer) qui doit se situer au même niveau que le .jar
 
-* database.conf 
-    * url="url de la base de donnée"
-    * user="user"
+* api.conf 
+    * url="url de l'API *(Par exemple http://localhost/Web/ptut/public/ en local)*"
+    * username= "user" *(D'un compte de l'app web ayant le role : ROLE_API_USER)*
     * password = "mot de passe"
 
 ## Executer le serveur
@@ -31,3 +31,8 @@ Le serveur répond avec un code de retour dans le **header Result** de la répon
 vérifie si l'IP du client est connue.
     * Si l'IP est inconnue, le serveur répond par ```UNKNOWN_TPE``` dans le body de la réponse HTML.
     * Si elle est connue, le serveur récupère l'ID du compte associé au TPE dans la base de donnée. 
+    
+* Ce serveur n'a aucun lien direct avec la base de donnée.
+    Toutes les requêtes avec cette dernière passe par l'API de l'application web.
+    * Seul un utilisateur disposant d'un compte avec un rôle permettant de communiquer avec l'API 
+        peut lancer ce serveur.
