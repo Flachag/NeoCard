@@ -73,7 +73,7 @@
                                         {% else %}
                                             <td>Banque</td>
                                         {% endif %}
-                                        {% if transaction.idReceiver is not null %}
+                                        {% if transaction.receiver is not null %}
                                             <td>{{ transaction.receiver.name }} {{ transaction.receiver.surname }}</td>
                                         {% else %}
                                             <td>Banque</td>
@@ -110,7 +110,11 @@
                                     {% for account in accounts %}
                                         {% if account.id == transaction.idIssuer %}
                                             <tr>
-                                                <td>{{ transaction.receiver.name }} {{ transaction.receiver.surname }}</td>
+                                                {% if transaction.receiver is not null %}
+                                                    <td>{{ transaction.receiver.name }} {{ transaction.receiver.surname }}</td>
+                                                {% else %}
+                                                    <td>Banque</td>
+                                                {% endif %}
                                                 <td>{{ transaction.label }}</td>
                                                 <td class="text-danger">{{ transaction.amount }}</td>
                                                 <td>{{ transaction.date |date('d/m/y') }}</td>
