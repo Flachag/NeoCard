@@ -131,10 +131,9 @@ class Transaction
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
-
+        $this->date = new \DateTime();
         return $this;
     }
 
@@ -146,11 +145,10 @@ class Transaction
     public function setLabel(string $label): self
     {
         $this->label = $label;
-
         return $this;
     }
 
-    public function getHash(): string
+    public function getHash(): ?string
     {
         return $this->hash;
     }

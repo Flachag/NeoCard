@@ -23,14 +23,14 @@ class Card
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(name="uid", type="string", length=255, nullable=false)
+     * @var int
+     * @ORM\Column(name="uid", type="integer", length=255, nullable=false)
      */
     private $uid;
 
     /**
-     * @var int
-     * @ORM\Column(name="account_id", type="integer", nullable=false)
+     * @var string
+     * @ORM\Column(name="account_id", type="string", nullable=false)
      */
     private $account_id;
 
@@ -40,33 +40,33 @@ class Card
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getAccountId(): ?int
+    public function getAccountId(): ?string
     {
         return $this->account_id;
     }
 
     /**
-     * @param int $account_id
+     * @param string $account_id
      */
-    public function setAccountId(int $account_id): void
+    public function setAccountId(string $account_id): void
     {
         $this->account_id = $account_id;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getUid(): ?string
+    public function getUid(): ?int
     {
         return $this->uid;
     }
 
     /**
-     * @param string $uid
+     * @param int $uid
      */
-    public function setUid(string $uid): void
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
