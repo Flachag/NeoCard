@@ -140,8 +140,12 @@ class APIController extends AbstractController{
 
         $repo = $this->getDoctrine()->getRepository(Transaction::class);
         $account = $this->getDoctrine()->getRepository(Account::class)->findBy(['id' => $idIssuer]);
-        if(isset($account[0]))
+        if(isset($account[0])) {
             $solde = $repo->getBalance($account[0]);
+            if ($account[0]->isBanned()) {
+                return new Response('{"status":"' . 'error' . '", "type":"banned user"}', 403);
+            }
+        }
         else $solde = -1;
 
 
@@ -155,7 +159,7 @@ class APIController extends AbstractController{
 
             return new Response('{"status":"'. 'success' .'" }',200);
         }
-        else return new Response('{"status":"'. 'error' .'", "type":"wrong amount"}',403);
+        else return new Response('{"status":"'. 'error' .'", "type":"wrong amount or unknown account"}',403);
     }
 
 
