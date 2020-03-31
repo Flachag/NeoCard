@@ -148,19 +148,7 @@ class Transaction
         return $this;
     }
 
-    public function getHash(): string
-    {
-        return $this->hash;
-    }
-
-
-    public function setHash(string $hash): self
-    {
-        $this->hash = $hash;
-        return $this;
-    }
-
-    public function getHash(): string
+    public function getHash(): ?string
     {
         return $this->hash;
     }

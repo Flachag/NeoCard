@@ -65,19 +65,21 @@ easy_admin:
 
         Terminaux:
             class: App\Entity\Terminal
+            disabled_actions: ['edit']
             list:
                 fields:
                     - id
                     - ip
                     - { property: 'idAccount', label: 'No Compte' }
             form:
-                title: Ajout ou Modification d'un Terminal
+                title: Ajout d'un Terminal
                 fields:
                     - ip
                     - { property: 'idAccount', label: 'No Compte' }
 
         Transactions:
             class: App\Entity\Transaction
+            controller: App\Controller\Admin\TransactionManagerController
             disabled_actions: ['edit', 'delete']
             list:
                 fields:
@@ -90,7 +92,6 @@ easy_admin:
                     - date
             form:
                 fields:
-                    - { property: 'type', label: 'Type' }
                     - { property: 'amount', label: 'Montant' }
                     - { property: 'idreceiver', label: 'No Client Receveur' }
                     - { property: 'label', label: 'Intitulé' }
