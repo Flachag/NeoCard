@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
@@ -54,21 +55,36 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/", name="security_login")
-     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function login()
+    public function login(AuthenticationUtils $authenticationUtils)
     {
-        if ($this->getUser() != null && !$this->getUser()->isBanned()) {
+        $user = $this->getUser();
+
+        if ($user != null && !$user->isBanned()) {
             return $this->redirectToRoute("dashboard");
         } else {
+            // get the login error if there is one
             $flash = null;
-            if($this->getUser() == null){
-                $flash = "Login ou Mot de passe incorrect";
-            } else if($this->getUser()->isBanned()){
-                $flash = "Utilisateur Banni";
+            if($user != null && $user->isBanned()){
+                $flash = "Utilisateur banni";
+
             }
-            return $this->render("security/login.html.twig", [
-                'flash' => $flash
+            $error = $authenticationUtils->getLastAuthenticationError();
+            if ($error != null) {
+                $code = $error->getCode();
+                if ($code == 0) {
+                    $flash = "Identifiant ou Mot de Passe incorrect";
+                }
+            }
+
+            // last username entered by the user
+            $lastUsername = $authenticationUtils->getLastUsername();
+
+            return $this->render('security/login.html.twig', [
+                'last_username' => $lastUsername,
+                'flash' => $flash,
             ]);
         }
     }
