@@ -4,7 +4,8 @@ import java.sql.*;
 import java.time.LocalDate;
 
 /**
- * Interface entre les la base de donnée et le programme.
+ * @deprecated Alerte de sécurité, remplacé par {@link ApiWrapper}
+ * Interface entre les la base de données et le programme.
  * Contient toutes les méthodes pour intéragir avec cette dernière.
  * @see SingleConnection
  */
@@ -64,10 +65,10 @@ public class Database {
 
     /**
      * Effectue un paiement entre le compte associé au TPE et une carte.
-     * @param idReceiver int ID du compte recepteur. (Compte associé au TPE)
-     * @param cardUID String UID de la carte emettrice. (Compte associé à la carte)
-     * @param amount float Montant de la transaction.
-     * @return boolean True si le paiement a été effectué.
+     * @param idReceiver ID du compte recepteur. (Compte associé au TPE)
+     * @param cardUID UID de la carte emettrice. (Compte associé à la carte)
+     * @param amount Montant de la transaction.
+     * @return True si le paiement a été effectué.
      */
     public static boolean pay(int idReceiver, String cardUID, float amount) {
         int idIssuer = -1;
@@ -117,8 +118,8 @@ public class Database {
 
     /**
      * Récupère le solde d'un compte.
-     * @param accountID int Numéro du compte
-     * @return float Solde du compte.
+     * @param accountID Numéro du compte
+     * @return Solde du compte.
      */
     public static float soldeCompte(int accountID) {
         try {

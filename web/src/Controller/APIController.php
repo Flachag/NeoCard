@@ -155,7 +155,7 @@ class APIController extends AbstractController{
 
             return new Response('{"status":"'. 'success' .'" }',200);
         }
-        else return new Response('{"status":"'. 'error' .'", "type":"unknown"}',403);
+        else return new Response('{"status":"'. 'error' .'", "type":"wrong amount"}',403);
     }
 
 

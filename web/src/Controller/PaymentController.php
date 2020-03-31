@@ -52,7 +52,13 @@ class PaymentController extends AbstractController{
         $form->handleRequest($request);
         $amount = number_format($form->get('amount')->getData(),2);
         if($form->isSubmitted() && $form->isValid()){
-            $receiver = $this->account->findBy(['id' => $form->get('receiver')->getData()])[0];
+            $receiver = $this->account->findBy(['id' => $form->get('receiver')->getData()]);
+            if(count($receiver) == 0){
+                $receiver = null;
+            }
+            else{
+                $receiver = $receiver[0];
+            }
             $balance = 0;
             foreach ($accounts as $account){
                 $balance += $this->transactions->getBalance($account);
@@ -92,6 +98,7 @@ class PaymentController extends AbstractController{
     public function historique(Request $request): Response{
         $user = $this->getUser();
         $accounts = $this->account->findBy(['iduser' => $user->getId()]);
+        $transactions = [];
         foreach ($accounts as $account){
             $transactions = $this->transactions->getTransactions($account);
         }
@@ -109,6 +116,7 @@ class PaymentController extends AbstractController{
                 $usr = $this->user->findOneBy(['id' => $acc->getIduser()]);
             }
             $transaction->receiver = $usr;
+
         }
 
         return $this->render('pages/historique.html.twig', [

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
+ * @deprecated Alerte de sécurité, remplacé par {@link ApiWrapper}
  * Permet une connexion unique avec la base de donnée.
  * L'énumération permet d'assurer un singleton malgré le multithread.
  * Accessible uniquement dans le package database.

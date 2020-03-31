@@ -1,6 +1,7 @@
 package server;
 
-import database.Database;
+import database.ApiWrapper;
+import exception.NonConnecteException;
 
 import java.io.*;
 import java.net.Socket;
@@ -74,6 +75,7 @@ public class TerminalListener implements Runnable {
     private void closeConnection() {
         try {
             isRunning = false;
+            Server.ipTpeConnectes.remove(socket.getInetAddress().getHostAddress());
             in.close();
             out.close();
             socket.close();
@@ -90,7 +92,14 @@ public class TerminalListener implements Runnable {
      */
     private boolean isValide() {
         String ip = socket.getInetAddress().getHostAddress();
-        int idAccount = Database.checkIP(ip);
+        int idAccount = 0;
+        try {
+            idAccount = ApiWrapper.checkIP(ip);
+        }
+        catch (NonConnecteException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
         if (idAccount < 0) {
             sendMessage("UNKNOWN_TPE");
             System.err.println("Un TPE non connu a essayé de se connecter (ip : " + ip + ")");
@@ -161,7 +170,7 @@ public class TerminalListener implements Runnable {
         float amount = Float.parseFloat(args[2]);
 
         //Coupe la connexion si il y'a une erreur de paiement.
-        if (!Database.pay(idAccount, cardUID, amount))
+        if (!ApiWrapper.pay(idAccount, cardUID, amount))
             sendMessage("PAIEMENT_REFUSED");
         else
             sendMessage("PAIEMENT_ACCEPTED");
@@ -193,7 +202,7 @@ public class TerminalListener implements Runnable {
     /**
      * Envoie une requête HTTP au TPE associé.
      * Cette requête contient un header 'Result'.
-     * @param String valeur Valeur du header 'Result'.
+     * @param valeur Valeur du header 'Result'.
      */
     private void sendMessage(String valeur) {
         final String HTTP_header = "HTTP/1.1 200 OK\r\n" +
