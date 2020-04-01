@@ -7,6 +7,7 @@ use App\Entity\Account;
 use App\Entity\Card;
 use App\Entity\Terminal;
 use App\Entity\Transaction;
+use App\Entity\User;
 use App\Repository\CardRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -140,9 +141,11 @@ class APIController extends AbstractController{
 
         $repo = $this->getDoctrine()->getRepository(Transaction::class);
         $account = $this->getDoctrine()->getRepository(Account::class)->findBy(['id' => $idIssuer]);
+
         if(isset($account[0])) {
+            $user = $this->getDoctrine()->getRepository(User::class)->findBy(['id' => $account[0]->getIduser()]);
             $solde = $repo->getBalance($account[0]);
-            if ($account[0]->isBanned()) {
+            if ($user[0]->isBanned()) {
                 return new Response('{"status":"' . 'error' . '", "type":"banned user"}', 403);
             }
         }
