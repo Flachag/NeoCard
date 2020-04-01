@@ -57,9 +57,18 @@ class User implements UserInterface
 
     /**
      * @var string
-     *
      */
     public $confirm_password;
+
+    /**
+     * @var string
+     */
+    public $confirm_new_password;
+
+    /**
+     * @var string
+     */
+    public $new_password;
 
     /**
      * @var string
@@ -185,6 +194,54 @@ class User implements UserInterface
     public function setBanned(bool $banned): void
     {
         $this->banned = $banned;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirm_password;
+    }
+
+    /**
+     * @param string $confirm_password
+     */
+    public function setConfirmPassword(string $confirm_password): void
+    {
+        $this->confirm_password = $confirm_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmNewPassword(): ?string
+    {
+        return $this->confirm_new_password;
+    }
+
+    /**
+     * @param string $confirm_new_password
+     */
+    public function setConfirmNewPassword(string $confirm_new_password): void
+    {
+        $this->confirm_new_password = $confirm_new_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewPassword(): ?string
+    {
+        return $this->new_password;
+    }
+
+    /**
+     * @param string $new_password
+     */
+    public function setNewPassword(string $new_password): void
+    {
+        $this->new_password = $new_password;
     }
 
 

@@ -21,6 +21,7 @@ easy_admin:
         Utilisateurs:
             controller: App\Controller\Admin\UserManagerController
             class: App\Entity\User
+            disabled_actions: ['delete']
             list:
                 fields:
                     - id
@@ -42,6 +43,7 @@ easy_admin:
         Comptes:
             class: App\Entity\Account
             controller: App\Controller\Admin\AccountManagerController
+            disabled_actions: ['delete']
             list:
                 fields:
                     - id
@@ -58,7 +60,7 @@ easy_admin:
             list:
                 fields:
                     - id
-                    - { property: 'uid', label: 'No Client' }
+                    - { property: 'uid', label: 'No Carte' }
                     - { property: 'account_id', label: 'No Compte' }
             form:
                 title: Ajout ou Modification d'une Carte
