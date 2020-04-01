@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.0-rc1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 185.212.225.190:3306
--- Généré le :  Dim 02 fév. 2020 à 11:38
+-- Hôte : localhost
+-- Généré le :  mar. 31 mars 2020 à 16:46
 -- Version du serveur :  5.7.29-0ubuntu0.18.04.1
--- Version de PHP :  7.3.5
+-- Version de PHP :  7.2.24-0ubuntu0.18.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,22 +28,25 @@ SET time_zone = "+00:00";
 -- Structure de la table `account`
 --
 
-DROP TABLE IF EXISTS `account`;
-CREATE TABLE IF NOT EXISTS `account` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `account` (
+  `id` varchar(25) NOT NULL,
   `idUser` int(11) NOT NULL,
-  `label` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `label` varchar(255) NOT NULL DEFAULT 'Compte Courant'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `account`
 --
 
 INSERT INTO `account` (`id`, `idUser`, `label`) VALUES
-(1, 5, 'Compte Courant'),
-(2, 6, 'Compte Courant'),
-(3, 7, 'Compte Courant');
+('1', 5, 'Compte Courant'),
+('3', 7, 'Compte Courant'),
+('4', 8, 'Compte Courant'),
+('5', 9, 'Compte Courant'),
+('6', 10, 'Compte Courant'),
+('d4ff7f629f3e444e09c7', 15, 'Compte Courant'),
+('e0a7d4755c71e32578e9', 16, 'Compte Courant'),
+('04fa9c8ef8d1e45826c2', 19, 'Compte Courant');
 
 -- --------------------------------------------------------
 
@@ -51,12 +54,18 @@ INSERT INTO `account` (`id`, `idUser`, `label`) VALUES
 -- Structure de la table `card`
 --
 
-DROP TABLE IF EXISTS `card`;
-CREATE TABLE IF NOT EXISTS `card` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idAccount` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `card` (
+  `id` int(11) NOT NULL,
+  `uid` varchar(255) NOT NULL,
+  `account_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `card`
+--
+
+INSERT INTO `card` (`id`, `uid`, `account_id`) VALUES
+(1, '2E0A54C3', 1);
 
 -- --------------------------------------------------------
 
@@ -64,11 +73,9 @@ CREATE TABLE IF NOT EXISTS `card` (
 -- Structure de la table `migration_versions`
 --
 
-DROP TABLE IF EXISTS `migration_versions`;
-CREATE TABLE IF NOT EXISTS `migration_versions` (
+CREATE TABLE `migration_versions` (
   `version` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `executed_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-  PRIMARY KEY (`version`)
+  `executed_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -88,19 +95,24 @@ INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
 -- Structure de la table `terminal`
 --
 
-DROP TABLE IF EXISTS `terminal`;
-CREATE TABLE IF NOT EXISTS `terminal` (
+CREATE TABLE `terminal` (
   `ip` varchar(39) NOT NULL,
   `idAccount` int(11) NOT NULL,
-  PRIMARY KEY (`ip`)
+  `id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `terminal`
 --
 
-INSERT INTO `terminal` (`ip`, `idAccount`) VALUES
-('10.10.191.190', 1);
+INSERT INTO `terminal` (`ip`, `idAccount`, `id`) VALUES
+('192.168.0.4', 4, 1),
+('192.168.0.3', 2, 2),
+('192.168.0.26', 2, 3),
+('192.168.1.24', 1, 4),
+('192.168.1.23', 1, 5),
+('192.168.0.15', 4, 6),
+('192.168.1.39', 4, 8);
 
 -- --------------------------------------------------------
 
@@ -108,34 +120,23 @@ INSERT INTO `terminal` (`ip`, `idAccount`) VALUES
 -- Structure de la table `transaction`
 --
 
-DROP TABLE IF EXISTS `transaction`;
-CREATE TABLE IF NOT EXISTS `transaction` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(255) NOT NULL,
+CREATE TABLE `transaction` (
+  `id` int(11) NOT NULL,
+  `hash` varchar(128) NOT NULL,
   `amount` float NOT NULL,
-  `idIssuer` int(11) DEFAULT NULL,
-  `idReceiver` int(11) DEFAULT NULL,
+  `idIssuer` varchar(25) DEFAULT NULL,
+  `idReceiver` varchar(25) DEFAULT NULL,
   `date` date NOT NULL,
   `label` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+  `type` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `transaction`
 --
 
-INSERT INTO `transaction` (`id`, `type`, `amount`, `idIssuer`, `idReceiver`, `date`, `label`) VALUES
-(1, 'Virement', 250, NULL, 1, '2019-12-31', 'Initialisation du Compte'),
-(12, 'Virement', 10, 1, 2, '2020-01-29', 'Test'),
-(3, 'Virement', 1, 2, 1, '2020-01-28', 'kdo'),
-(4, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
-(5, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
-(6, 'Virement', 50, 1, 2, '2020-01-24', 'ks'),
-(7, 'Virement', 1, 2, 1, '2020-01-28', 'ks'),
-(8, 'Virement', 1000, NULL, 3, '2020-01-28', 'Initialisation du Compte'),
-(9, 'Virement', 50, 1, 3, '2020-01-28', 'Kdo Pernot'),
-(10, 'Virement', 25, 3, 1, '2020-01-28', 'kdo flav'),
-(14, 'Virement', 0.25, 1, 3, '2020-01-31', 'test');
+INSERT INTO `transaction` (`id`, `hash`, `amount`, `idIssuer`, `idReceiver`, `date`, `label`, `type`) VALUES
+(70, 'c21a36100cad5cd7dbf77aa4e3f62f80', 50, NULL, '1', '2020-03-28', 'Dépôt', 'Dépôt');
 
 -- --------------------------------------------------------
 
@@ -143,28 +144,102 @@ INSERT INTO `transaction` (`id`, `type`, `amount`, `idIssuer`, `idReceiver`, `da
 -- Structure de la table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `surname` varchar(255) NOT NULL,
-  `birthday` date NOT NULL,
   `password` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `banned` tinyint(1) NOT NULL DEFAULT '0',
+  `roles` json NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `surname`, `birthday`, `password`, `username`, `email`) VALUES
-(7, 'PERNOT', 'Anthony', '2000-03-28', '$2y$13$zl.YpoEhNZb2kpRG.11QWOtxU6n4PbMYULbjoHSnF5gEKfYQHaq16', 'totoprnt', 'anthony.pernot@hotmail.fr'),
-(5, 'Chagras', 'Flavien', '1999-04-23', '$2y$13$9jU6kiCYFCD4zs5aNznIq.dz0ptmIKAMC4TJorGvtzrCY4K6eaGdW', 'Flachag', 'flavien.chagras@gmail.com'),
-(6, 'sayer', 'jul', '2000-10-21', '$2y$13$yV6VG1MKnWh3WQB98IbwnOFosi.Y3Fn.XckB12LhJyE74GD4eDhR2', 'wilders', 'jean-bonaubo@singejj.com');
+INSERT INTO `user` (`id`, `name`, `surname`, `password`, `username`, `email`, `banned`, `roles`) VALUES
+(7, 'PERNOT', 'Anthony', '$2y$13$zl.YpoEhNZb2kpRG.11QWOtxU6n4PbMYULbjoHSnF5gEKfYQHaq16', 'totoprnt', 'anthony.pernot@hotmail.fr', 0, '[\"ROLE_USER\"]'),
+(5, 'Chagras', 'Flavien', '$2y$13$r12wRtfEKdHv6iPTkrjmiOFhMhqoJK7o2yHl1K2R1H9lS2mZzIehu', 'Flachag', 'flavien.chagras@gmail.com', 0, '[\"ROLE_ADMIN\"]'),
+(6, 'test', 'test', 'yolo', 'test', 'test', 0, '[\"ROLE_USER\"]'),
+(8, 'BLAISE', 'Lucas', '$2y$13$gxCmRMOF/2LF7sRE6CW5Su.7RcsuU.alMBLHRH4dX0KTIkBPSZr92', 'blaise98u', 'lucas.blaise1@etu.univ-lorraine.fr', 0, '[\"ROLE_USER\"]'),
+(9, 'test', 'test', '$2y$13$H.pfoo/4Ltt6kwBF5fXgQu9SEcQKxOajEp9UjlyaKYvy0HEmZDfJq', 'test', 'test@test.fr', 0, '[\"ROLE_USER\"]'),
+(10, 'Test', 'test', '$2y$13$TUagbS6GS89KSVbQCKWeJOm3p4bSdQQ2TUV5TYMG.u7KSeJPeIpQa', 'test1', 'fzerflavien.chagras@gmail.com', 0, '[\"ROLE_USER\"]'),
+(15, 'said', 'kesseiri', '$2y$13$VH9WugVKKOVuirzdPz7HO.3M.Rv6Kogior4G8/GSW6IrBlII/fysO', 'said57', 'test.said@gmail.com', 0, '[\"ROLE_USER\"]'),
+(16, 'Mayer', 'Gauthier', '$2y$13$2Rton0Yo76/n1lhWECsTi.TmLt5BMG5If9FyNvqBhCgbz3PJiIGDW', 'Gauthier', 'mayer.gauthier@gmail.com', 0, '[\"ROLE_ADMIN\", \"ROLE_API_USER\"]'),
+(17, 'TPE', 'TPE', '$2y$13$L.RqBjiwXFzlntLcQT1loOjDQe.LxhmGXWb8dpR3o0AFI59IVh9ma', 'serveur', 'admin@admin.com', 0, '[\"ROLE_API_USER\"]');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `card`
+--
+ALTER TABLE `card`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `migration_versions`
+--
+ALTER TABLE `migration_versions`
+  ADD PRIMARY KEY (`version`);
+
+--
+-- Index pour la table `terminal`
+--
+ALTER TABLE `terminal`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `transaction`
+--
+ALTER TABLE `transaction`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `card`
+--
+ALTER TABLE `card`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `terminal`
+--
+ALTER TABLE `terminal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT pour la table `transaction`
+--
+ALTER TABLE `transaction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

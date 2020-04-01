@@ -31,7 +31,7 @@ Lancez un serveur XAMP, importez le fichier de création de la BDD ([sql/neocard
 
 **BLAISE Lucas** - SI1
 
-**KESSEIRI Mohammed** - S3A
+**KESSEIRI Mohammed** - SI2
 
 **MAYER Gauthier** - SI1
 

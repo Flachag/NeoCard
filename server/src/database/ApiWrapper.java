@@ -43,7 +43,7 @@ public enum ApiWrapper {
      * Constructeur PRIVE initialisant la connexion avec la base de donnée. (car enum)
      * Java l'appelle automatiquement la PREMIERE FOIS que l'on tente d'accéder à l'instance.
      *
-     * Utilise le fichier /conf/database.conf pour les paramètres de connexion. (user etc)
+     * Utilise le fichier /conf/api.conf pour les paramètres de connexion. (user etc)
      */
     ApiWrapper() {
         try {
