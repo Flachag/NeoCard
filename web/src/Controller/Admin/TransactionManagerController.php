@@ -11,10 +11,8 @@ class TransactionManagerController extends EasyAdminController
     protected function createNewEntity()
     {
         $result = parent::createNewEntity();
-
         $amount = $result->getAmount();
         $idReceiver = $result->getIdreceiver();
-
 
         $type = "Virement";
         $result->setType($type);
@@ -24,11 +22,11 @@ class TransactionManagerController extends EasyAdminController
         $transactions = $manager->findAll();
         $count = count($transactions);
         if ($count == 0) {
-            $hash = md5(ceil($amount) . '' . $idReceiver . $type);
+            $hash = md5(ceil($amount) . null . $idReceiver . $type);
         } else {
             $last = $transactions[$count - 1];
             $hash_last = $last->getHash();
-            $hash = md5($hash_last . ceil($amount) . '' . $idReceiver . $type);
+            $hash = md5($hash_last . ceil($amount) . null . $idReceiver . $type);
         }
 
         //il faut verifier que le hash de la précédente est bon
@@ -43,7 +41,6 @@ class TransactionManagerController extends EasyAdminController
             $result->setHash($hash);
             $result->setDate(new \DateTime());
         }
-
 
         return $result;
     }
