@@ -5,17 +5,18 @@ easy_admin:
         name_property_path: 'fullname'
 
     list:
+        item_permission: ROLE_ADMIN
         actions:
             - { name: 'edit', icon: 'pencil', label: false }
             - { name: 'delete', icon: 'trash', label: false }
 
     design:
         menu:
-            - { entity: 'Utilisateurs', permissions: 'ROLE_ADMIN' }
-            - { entity: 'Comptes', permissions: 'ROLE_ADMIN' }
-            - { entity: 'Transactions', permissions: 'ROLE_ADMIN' }
-            - { entity: 'Cartes', permissions: 'ROLE_ADMIN' }
-            - { entity: 'Terminaux', permissions: 'ROLE_ADMIN' }
+            - { entity: 'Utilisateurs', icon: 'user', permission: 'ROLE_ADMIN' }
+            - { entity: 'Comptes', permission: 'ROLE_ADMIN' }
+            - { entity: 'Transactions', permission: 'ROLE_ADMIN' }
+            - { entity: 'Cartes', permission: 'ROLE_ADMIN' }
+            - { entity: 'Terminaux', permission: ['ROLE_ADMIN', 'ROLE_SHOP'] }
 
     entities:
         Utilisateurs:
@@ -23,6 +24,7 @@ easy_admin:
             class: App\Entity\User
             disabled_actions: ['delete']
             list:
+                item_permission: ROLE_ADMIN
                 fields:
                     - id
                     - { property: 'name', label: 'Nom' }
@@ -39,12 +41,15 @@ easy_admin:
                     - { property: 'username', label: 'Pseudo' }
                     - { property: 'email', label: 'Contact' }
                     - { property: 'roles', label: 'Roles' }
+            new:
+                item_permission: 'ROLE_ADMIN'
 
         Comptes:
             class: App\Entity\Account
             controller: App\Controller\Admin\AccountManagerController
             disabled_actions: ['delete']
             list:
+                item_permission: ROLE_ADMIN
                 fields:
                     - id
                     - { property: 'iduser', label: 'No Client' }
@@ -54,36 +59,43 @@ easy_admin:
                 fields:
                     - { property: 'iduser', label: 'No Client' }
                     - { property: 'label', label: 'Type de compte' }
-
+            new:
+                item_permission: 'ROLE_ADMIN'
         Cartes:
             class: App\Entity\Card
             list:
+                item_permission: ROLE_ADMIN
                 fields:
                     - id
                     - { property: 'uid', label: 'No Carte' }
                     - { property: 'account_id', label: 'No Compte' }
             form:
                 title: Ajout ou Modification d'une Carte
+            new:
+                item_permission: 'ROLE_ADMIN'
 
         Terminaux:
             class: App\Entity\Terminal
+            controller: App\Controller\Admin\TerminalManagerController
             disabled_actions: ['edit']
             list:
+                item_permission: [ROLE_ADMIN, ROLE_SHOP]
                 fields:
-                    - id
+                    - { property: 'id', permission: 'ROLE_ADMIN' }
                     - ip
                     - { property: 'idAccount', label: 'No Compte' }
             form:
                 title: Ajout d'un Terminal
                 fields:
                     - ip
-                    - { property: 'idAccount', label: 'No Compte' }
+                    - { property: 'idAccount', label: 'No Compte', permission: "ROLE_ADMIN" }
 
         Transactions:
             class: App\Entity\Transaction
             controller: App\Controller\Admin\TransactionManagerController
             disabled_actions: ['edit', 'delete']
             list:
+                item_permission: ROLE_ADMIN
                 fields:
                     - { property: 'hash', label: 'Code' }
                     - { property: 'type', label: 'Type' }
@@ -97,3 +109,5 @@ easy_admin:
                     - { property: 'amount', label: 'Montant' }
                     - { property: 'idreceiver', label: 'No Client Receveur' }
                     - { property: 'label', label: 'Intitulé' }
+            new:
+                item_permission: 'ROLE_ADMIN'
