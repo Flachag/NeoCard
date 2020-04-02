@@ -221,15 +221,15 @@ public class TPEController implements Initializable {
                                 }
                                 break;
                         }
-                        if (receive.contains("a echoue")) {
-                            error.setVisible(true);
-                            dataReceving = false;
-                            try {
-                                Thread.sleep(1000);
-                            } catch (Exception ex) {
-                                System.err.println("Impossible de faire patienter le programme");
-                            }
-                            break;
+                        if (receive.contains("a echoue") || receive.contains("Exception (")) {
+                        	 error.setVisible(true);
+                             dataReceving = false;
+                             try {
+                                 Thread.sleep(1000);
+                             } catch (Exception ex) {
+                                 System.err.println("Impossible de faire patienter le programme");
+                             }
+                             break;
                         }
                         if (!dataReceving) {
                             break;
@@ -286,7 +286,7 @@ public class TPEController implements Initializable {
                                 dataReceving = false;
                                 break;
                             case "Entrez mot de passe : ":
-                                System.out.println(wifi.getPassword());
+                                //System.out.println(wifi.getPassword());
                                 arduino.serialWrite(wifi.getPassword());
                                 statusParam.setText("");
                                 break;
